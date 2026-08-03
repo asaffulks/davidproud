@@ -1,0 +1,641 @@
+/* David Proud — poetry & philosophy
+   Design: "The Owl of Minerva" — dusk-dark chrome, candlelight gold,
+   classical Garamond text on warm paper. Editorial, unhurried, grave. */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+:root {
+  --dusk: #14110c;          /* near-black, warm */
+  --dusk-2: #1d1811;
+  --dusk-soft: #a89877;     /* muted text on dark */
+  --gold: #c9a75a;          /* candlelight */
+  --gold-deep: #8a6d3b;
+  --paper: #f6f1e5;
+  --ink: #211d16;
+  --ink-soft: #5f574a;
+  --rule: #ddd2bc;
+  --measure: 41rem;
+  --display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --text: 'EB Garamond', Garamond, Georgia, serif;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--text);
+  font-size: 1.28rem;
+  line-height: 1.72;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: var(--gold); color: var(--dusk); }
+
+.wrap { max-width: var(--measure); margin: 0 auto; padding: 0 1.5rem; }
+
+a { color: var(--gold-deep); text-underline-offset: 3px; }
+
+/* ================= Header — the dusk band ================= */
+
+.site-head {
+  background:
+    radial-gradient(120% 90% at 50% -20%, #2a2216 0%, transparent 55%),
+    linear-gradient(180deg, var(--dusk-2) 0%, var(--dusk) 100%);
+  color: var(--paper);
+  text-align: center;
+  padding: 4.8rem 1.5rem 0;
+  border-bottom: 1px solid var(--gold-deep);
+}
+
+/* CSS-only ornament: hairline + gold diamond (no unicode — renders identically everywhere) */
+.site-mark {
+  position: relative;
+  width: 4.5rem;
+  height: 1px;
+  margin: 0 auto;
+  background: linear-gradient(90deg, transparent, var(--gold-deep), transparent);
+}
+.site-mark::before {
+  content: '';
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 7px; height: 7px;
+  transform: translate(-50%, -50%) rotate(45deg);
+  background: var(--gold);
+}
+
+.site-title {
+  font-family: var(--display);
+  font-weight: 350;
+  font-size: clamp(3rem, 8.5vw, 5.2rem);
+  font-variation-settings: 'opsz' 144;
+  letter-spacing: 0.015em;
+  line-height: 1.02;
+  margin: 0.9rem 0 0;
+}
+.site-title a { color: inherit; text-decoration: none; }
+
+.site-tagline {
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: 0.86rem;
+  text-transform: uppercase;
+  letter-spacing: 0.42em;
+  margin: 1.15rem 0 0 0.42em;
+  color: var(--dusk-soft);
+}
+
+/* thin gold filament under the masthead */
+.site-head::after {
+  content: '';
+  display: block;
+  width: 4.5rem;
+  height: 1px;
+  margin: 2.1rem auto 0;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+.site-nav {
+  margin-top: 2rem;
+  padding-bottom: 1.6rem;
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: 0.92rem;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+}
+.site-nav a {
+  color: var(--dusk-soft);
+  text-decoration: none;
+  margin: 0 0.75rem;
+  display: inline-block;
+  padding-bottom: 4px;
+  border-bottom: 1px solid transparent;
+  transition: color .25s, border-color .25s;
+}
+.site-nav a:hover, .site-nav a[aria-current="page"] {
+  color: var(--gold);
+  border-color: var(--gold-deep);
+}
+
+/* ================= Epigraph (home) ================= */
+
+.epigraph {
+  text-align: center;
+  max-width: 33rem;
+  margin: 4.2rem auto 0;
+  padding: 0 1.5rem;
+}
+.epigraph blockquote {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(1.35rem, 3.2vw, 1.7rem);
+  line-height: 1.45;
+  color: var(--ink);
+}
+.epigraph cite {
+  display: block;
+  margin-top: 1.1rem;
+  font-family: var(--display);
+  font-style: normal;
+  font-weight: 300;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: var(--gold-deep);
+}
+
+/* ornament divider — hairline + gold diamond */
+.fleuron {
+  position: relative;
+  border: 0;
+  width: 5.5rem;
+  height: 1px;
+  margin: 3.4rem auto;
+  background: linear-gradient(90deg, transparent, var(--gold-deep), transparent);
+  overflow: visible;
+}
+.fleuron::before {
+  content: '';
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 6px; height: 6px;
+  transform: translate(-50%, -50%) rotate(45deg);
+  background: var(--gold-deep);
+}
+
+/* ================= Home — featured + index ================= */
+
+.section-label {
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.34em;
+  color: var(--ink-soft);
+  text-align: center;
+  margin: 0 0 2.4rem;
+}
+
+.featured { text-align: center; margin-top: 0.5rem; }
+.featured .entry-cat { font-size: 0.8rem; }
+.featured-title {
+  font-family: var(--display);
+  font-weight: 350;
+  font-variation-settings: 'opsz' 100;
+  font-size: clamp(2.2rem, 6vw, 3.3rem);
+  line-height: 1.08;
+  margin: 0.7rem 0 0.6rem;
+}
+.featured-title a { color: var(--ink); text-decoration: none; transition: color .25s; }
+.featured-title a:hover { color: var(--gold-deep); }
+.featured-excerpt {
+  font-style: italic;
+  font-size: 1.25rem;
+  color: var(--ink-soft);
+  max-width: 30rem;
+  margin: 0.6rem auto 0;
+}
+.read-on {
+  display: inline-block;
+  margin-top: 1.4rem;
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.26em;
+  color: var(--gold-deep);
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 4px;
+  transition: border-color .25s, color .25s;
+}
+.read-on:hover { color: var(--dusk); border-color: var(--gold); }
+
+.entries { list-style: none; margin: 0; padding: 0; }
+.entry {
+  display: grid;
+  grid-template-columns: 5.2rem 1fr;
+  gap: 1.6rem;
+  align-items: baseline;
+  padding: 2.1rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+.entry:last-child { border-bottom: 0; }
+
+.entry-no {
+  font-family: var(--display);
+  font-weight: 300;
+  font-style: italic;
+  font-size: 1.5rem;
+  color: var(--rule);
+  text-align: right;
+  transition: color .3s;
+}
+.entry:hover .entry-no { color: var(--gold); }
+
+.entry-cat {
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  color: var(--gold-deep);
+}
+.entry-title {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 1.75rem;
+  line-height: 1.18;
+  margin: 0.35rem 0 0.25rem;
+}
+.entry-title a { color: var(--ink); text-decoration: none; transition: color .25s; }
+.entry-title a:hover { color: var(--gold-deep); }
+.entry-meta { color: var(--ink-soft); font-size: 1rem; font-style: italic; }
+.entry-excerpt { margin: 0.45rem 0 0; color: var(--ink-soft); font-size: 1.12rem; }
+
+/* ================= Single writing ================= */
+
+.piece-head { text-align: center; margin: 4rem 0 3rem; }
+.piece-cat {
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: var(--gold-deep);
+}
+.piece-title {
+  font-family: var(--display);
+  font-weight: 350;
+  font-variation-settings: 'opsz' 144;
+  font-size: clamp(2.4rem, 6.5vw, 3.6rem);
+  line-height: 1.06;
+  margin: 0.7rem 0 0.7rem;
+}
+.piece-date { color: var(--ink-soft); font-style: italic; font-size: 1.02rem; }
+.piece-head::after {
+  content: '';
+  display: block;
+  width: 3.4rem;
+  height: 1px;
+  margin: 1.9rem auto 0;
+  background: linear-gradient(90deg, transparent, var(--gold-deep), transparent);
+}
+
+.prose p { margin: 0 0 1.5rem; }
+.prose h2, .prose h3 {
+  font-family: var(--display);
+  font-weight: 450;
+  line-height: 1.2;
+  margin: 2.6rem 0 1rem;
+}
+.prose blockquote {
+  margin: 2rem 0;
+  padding-left: 1.3rem;
+  border-left: 2px solid var(--gold);
+  color: var(--ink-soft);
+  font-style: italic;
+  font-size: 1.22rem;
+}
+.prose img {
+  max-width: 100%; height: auto; display: block;
+  margin: 2.4rem auto; border-radius: 2px;
+  box-shadow: 0 14px 40px -18px rgba(20, 17, 12, 0.45);
+}
+.prose hr {
+  position: relative;
+  border: 0;
+  width: 5.5rem;
+  height: 1px;
+  margin: 2.8rem auto;
+  background: linear-gradient(90deg, transparent, var(--gold-deep), transparent);
+  overflow: visible;
+}
+.prose hr::before {
+  content: '';
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 6px; height: 6px;
+  transform: translate(-50%, -50%) rotate(45deg);
+  background: var(--gold-deep);
+}
+
+/* Drop cap — essays & philosophy only (.dropcap set by template) */
+.dropcap > p:first-of-type::first-letter {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 3.55em;
+  line-height: 0.78;
+  float: left;
+  padding: 0.09em 0.12em 0 0;
+  color: var(--gold-deep);
+}
+
+/* Poetry — slightly larger, looser, narrower measure */
+.verse { max-width: 34rem; margin: 0 auto; font-size: 1.34rem; line-height: 1.85; }
+
+.piece-image {
+  max-width: 100%; height: auto; display: block;
+  margin: 0 auto 3rem; border-radius: 2px;
+  box-shadow: 0 18px 50px -20px rgba(20, 17, 12, 0.5);
+}
+
+/* end-mark — same ornament, spaced as a closing mark */
+.end-mark {
+  position: relative;
+  border: 0;
+  width: 5.5rem;
+  height: 1px;
+  margin: 3.2rem auto 0;
+  background: linear-gradient(90deg, transparent, var(--gold-deep), transparent);
+  overflow: visible;
+}
+.end-mark::before {
+  content: '';
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 6px; height: 6px;
+  transform: translate(-50%, -50%) rotate(45deg);
+  background: var(--gold-deep);
+}
+
+/* prev / next */
+.piece-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-top: 3.6rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--rule);
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: 0.95rem;
+}
+.piece-nav a { color: var(--ink-soft); text-decoration: none; max-width: 46%; transition: color .25s; }
+.piece-nav a:hover { color: var(--gold-deep); }
+.piece-nav .dir {
+  display: block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.26em;
+  color: var(--gold-deep);
+  margin-bottom: 0.35rem;
+}
+.piece-nav .next { text-align: right; margin-left: auto; }
+
+.back {
+  display: inline-block;
+  margin-top: 2.6rem;
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  color: var(--ink-soft);
+  text-decoration: none;
+}
+.back:hover { color: var(--gold-deep); }
+
+/* ================= About ================= */
+
+.about-photo {
+  width: 190px; height: 190px; object-fit: cover; border-radius: 50%;
+  display: block; margin: 0 auto 2rem;
+  border: 1px solid var(--gold-deep);
+  box-shadow: 0 0 0 6px var(--paper), 0 0 0 7px var(--rule);
+}
+
+/* ================= Footer — return to dusk ================= */
+
+.site-foot {
+  background: linear-gradient(180deg, var(--dusk) 0%, var(--dusk-2) 100%);
+  border-top: 1px solid var(--gold-deep);
+  color: var(--dusk-soft);
+  text-align: center;
+  font-size: 1rem;
+  padding: 3.4rem 1.5rem 3rem;
+  margin-top: 5.5rem;
+}
+.site-foot .foot-fleuron {
+  position: relative;
+  width: 4.5rem;
+  height: 1px;
+  margin: 0 auto 1.4rem;
+  background: linear-gradient(90deg, transparent, var(--gold-deep), transparent);
+}
+.site-foot .foot-fleuron::before {
+  content: '';
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 7px; height: 7px;
+  transform: translate(-50%, -50%) rotate(45deg);
+  background: var(--gold);
+}
+.site-foot p { margin: 0.3rem 0; }
+.site-foot a { color: var(--gold); text-decoration: none; }
+.site-foot .foot-title {
+  font-family: var(--display);
+  font-weight: 300;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  color: var(--paper);
+}
+
+/* gentle arrival */
+@media (prefers-reduced-motion: no-preference) {
+  main { animation: arrive 0.55s ease-out both; }
+  @keyframes arrive {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: none; }
+  }
+}
+
+/* ================= Home hero (extends the dusk band) ================= */
+
+.hero-extra {
+  max-width: 36rem;
+  margin: 3.4rem auto 0;
+  padding-bottom: 4.6rem;
+}
+.hero-extra .epigraph { margin: 0 auto; }
+.hero-extra .epigraph blockquote { color: var(--paper); }
+.hero-extra .epigraph cite { color: var(--gold); }
+.hero-lede {
+  margin: 1.9rem auto 0;
+  max-width: 30rem;
+  font-size: 1.18rem;
+  line-height: 1.7;
+  color: var(--dusk-soft);
+}
+.hero-ctas { margin-top: 2.3rem; }
+
+/* ================= Buttons ================= */
+
+.btn {
+  display: inline-block;
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  text-decoration: none;
+  padding: 0.9rem 1.7rem 0.82rem;
+  margin: 0.35rem 0.45rem;
+  border: 1px solid var(--gold-deep);
+  border-radius: 1px;
+  color: var(--gold);
+  transition: background .25s, color .25s, border-color .25s;
+}
+.btn:hover { background: var(--gold); border-color: var(--gold); color: var(--dusk); }
+.btn--ghost { color: var(--dusk-soft); border-color: #3a3226; }
+.btn--ghost:hover { background: transparent; border-color: var(--gold); color: var(--gold); }
+/* on paper */
+.btn--paper { color: var(--gold-deep); border-color: var(--gold-deep); }
+.btn--paper:hover { background: var(--gold-deep); border-color: var(--gold-deep); color: var(--paper); }
+
+/* ================= Home sections ================= */
+
+.home-section { margin-top: 4.2rem; }
+.home-more { text-align: center; margin-top: 2.4rem; }
+
+/* ================= Full-bleed tutoring band ================= */
+
+.band {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  background:
+    radial-gradient(100% 130% at 50% 120%, #2a2216 0%, transparent 60%),
+    linear-gradient(180deg, var(--dusk) 0%, var(--dusk-2) 100%);
+  border-top: 1px solid var(--gold-deep);
+  border-bottom: 1px solid var(--gold-deep);
+  color: var(--paper);
+  text-align: center;
+  padding: 4.2rem 1.5rem 4.6rem;
+  margin-top: 5rem;
+}
+.band .section-label { color: var(--gold); margin-bottom: 1.4rem; }
+.band-title {
+  font-family: var(--display);
+  font-weight: 350;
+  font-variation-settings: 'opsz' 144;
+  font-size: clamp(1.9rem, 5vw, 2.7rem);
+  line-height: 1.12;
+  margin: 0 0 1rem;
+}
+.band-text {
+  max-width: 32rem;
+  margin: 0 auto 1.9rem;
+  color: var(--dusk-soft);
+  font-size: 1.16rem;
+}
+
+/* ================= Testimonials ================= */
+
+.testimonials { list-style: none; margin: 0; padding: 0; }
+.testimonial {
+  position: relative;
+  padding: 2.6rem 0 2.4rem 3.4rem;
+  border-bottom: 1px solid var(--rule);
+}
+.testimonial:last-child { border-bottom: 0; }
+.testimonial::before {
+  content: '\201C';
+  position: absolute;
+  left: 0;
+  top: 2.1rem;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 3.6rem;
+  line-height: 1;
+  color: var(--gold);
+}
+.testimonial-quote {
+  margin: 0;
+  font-style: italic;
+  font-size: 1.32rem;
+  line-height: 1.65;
+  color: var(--ink);
+}
+.testimonial-quote p { margin: 0 0 0.8rem; }
+.testimonial-quote p:last-child { margin-bottom: 0; }
+.testimonial-attrib {
+  margin-top: 1.1rem;
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.26em;
+  color: var(--gold-deep);
+}
+.testimonial-attrib .role {
+  color: var(--ink-soft);
+  letter-spacing: 0.18em;
+}
+
+/* home pull-quote variant */
+.pull-quote { text-align: center; max-width: 34rem; margin: 0 auto; }
+.pull-quote .testimonial-quote { font-size: 1.4rem; }
+.pull-quote .testimonial-attrib { margin-top: 1.3rem; }
+
+/* ================= Contact ================= */
+
+.contact-card {
+  text-align: center;
+  max-width: 32rem;
+  margin: 0 auto;
+}
+.contact-card .lead { font-size: 1.3rem; font-style: italic; color: var(--ink-soft); }
+.contact-lines { margin: 2.4rem 0 0; padding: 0; list-style: none; }
+.contact-lines li {
+  padding: 1.4rem 0;
+  border-top: 1px solid var(--rule);
+}
+.contact-lines li:last-child { border-bottom: 1px solid var(--rule); }
+.contact-label {
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: var(--gold-deep);
+  display: block;
+  margin-bottom: 0.4rem;
+}
+.contact-value { font-size: 1.25rem; }
+.contact-value a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--rule); padding-bottom: 2px; transition: color .25s, border-color .25s; }
+.contact-value a:hover { color: var(--gold-deep); border-color: var(--gold); }
+
+/* ================= Footer nav ================= */
+
+.foot-nav { margin: 1.4rem 0 1.2rem; }
+.foot-nav a {
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--dusk-soft);
+  text-decoration: none;
+  margin: 0 0.65rem;
+  transition: color .25s;
+}
+.foot-nav a:hover { color: var(--gold); }
+
+@media (max-width: 560px) {
+  body { font-size: 1.16rem; }
+  .site-head { padding-top: 3.4rem; }
+  .site-nav { font-size: 0.8rem; letter-spacing: 0.16em; }
+  .site-nav a { margin: 0.25rem 0.55rem; }
+  .entry { grid-template-columns: 1fr; gap: 0.2rem; }
+  .entry-no { display: none; }
+  .verse { font-size: 1.22rem; }
+  .testimonial { padding-left: 2.4rem; }
+}

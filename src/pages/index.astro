@@ -1,0 +1,99 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+
+const writings = (await getCollection('writings', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const latest = writings.slice(0, 3);
+
+const testimonials = (await getCollection('testimonials', ({ data }) => !data.draft))
+  .sort((a, b) => a.data.order - b.data.order);
+const featuredTestimonial = testimonials[0];
+const FeaturedQuote = featuredTestimonial
+  ? (await render(featuredTestimonial)).Content
+  : null;
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+<Base>
+  <Fragment slot="hero">
+    <div class="hero-extra">
+      <div class="epigraph">
+        <blockquote>
+          &ldquo;The owl of Minerva spreads its wings only with the falling of the&nbsp;dusk.&rdquo;
+        </blockquote>
+        <cite>G. W. F. Hegel</cite>
+      </div>
+      <p class="hero-lede">
+        Poems and essays in the company of the great questions — and one-to-one
+        philosophy tutoring, from first principles to the <em>Phenomenology</em>.
+      </p>
+      <div class="hero-ctas">
+        <a class="btn" href="/writings/">Read the Writings</a>
+        <a class="btn btn--ghost" href="/tutoring/">Philosophy Tutoring</a>
+      </div>
+    </div>
+  </Fragment>
+
+  <section class="home-section">
+    <p class="section-label">Latest writings</p>
+    <ul class="entries">
+      {latest.map((w) => (
+        <li class="entry">
+          <span class="entry-no" aria-hidden="true">❧</span>
+          <div>
+            <span class="entry-cat">{w.data.category}</span>
+            <h2 class="entry-title">
+              <a href={`/writing/${w.id}/`}>{w.data.title}</a>
+            </h2>
+            <p class="entry-meta">{fmt(w.data.date)}</p>
+            {w.data.excerpt && <p class="entry-excerpt">{w.data.excerpt}</p>}
+          </div>
+        </li>
+      ))}
+    </ul>
+    <div class="home-more">
+      <a class="btn btn--paper" href="/writings/">All writings</a>
+    </div>
+  </section>
+
+  {featuredTestimonial && (
+    <section class="home-section">
+      <hr class="fleuron" />
+      <div class="pull-quote">
+        <blockquote class="testimonial-quote">
+          {FeaturedQuote && <FeaturedQuote />}
+        </blockquote>
+        <p class="testimonial-attrib">
+          {featuredTestimonial.data.name}
+          {featuredTestimonial.data.role && (
+            <span class="role"> &middot; {featuredTestimonial.data.role}</span>
+          )}
+        </p>
+        <div class="home-more">
+          <a class="read-on" href="/testimonials/">More testimonials</a>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="band">
+    <p class="section-label">Tutoring</p>
+    <h2 class="band-title">Read philosophy properly,<br />in good company.</h2>
+    <p class="band-text">
+      One-to-one tutoring in philosophy — Hegel, German idealism, and the
+      history of Western thought. For students, and for the simply curious.
+    </p>
+    <a class="btn" href="/tutoring/">About Tutoring</a>
+    <a class="btn btn--ghost" href="/contact/">Enquire</a>
+  </section>
+
+  <section class="home-section" style="text-align:center; margin-bottom:1rem;">
+    <p class="section-label" style="margin-bottom:1rem;">Correspondence</p>
+    <p style="font-style:italic; color:var(--ink-soft); max-width:28rem; margin:0 auto 1.6rem;">
+      Questions, readings, invitations, and conversation are always welcome.
+    </p>
+    <a class="btn btn--paper" href="/contact/">Get in touch</a>
+  </section>
+</Base>

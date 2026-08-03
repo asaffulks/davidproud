@@ -1,0 +1,73 @@
+# Sveltia CMS configuration — David's content manager.
+#
+# backend.repo MUST be set to  <your-github-username>/davidproud  before this works live.
+# Placeholder below is filled in during deploy.
+backend:
+  name: github
+  repo: asaffulks/davidproud
+  branch: main
+  # Sveltia's hosted OAuth handles login; if we self-host the auth relay,
+  # base_url is set here. Left default for now.
+
+# Lets David preview/edit against a local copy during setup without logging in.
+local_backend: true
+
+# Uploaded pictures land in public/uploads and are served from /uploads.
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+# A friendly editing experience — one collection: "Writings".
+collections:
+  - name: "writings"
+    label: "Writings"
+    label_singular: "Writing"
+    folder: "src/content/writings"
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    summary: "{{title}}  ·  {{category}}  ·  {{date}}"
+    sortable_fields: ["date", "title"]
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "DD MMMM YYYY", time_format: false }
+      - label: "Type"
+        name: "category"
+        widget: "select"
+        options: ["Poetry", "Philosophy", "Essay"]
+        default: "Poetry"
+      - { label: "Short summary (optional)", name: "excerpt", widget: "string", required: false, hint: "One line shown on the home page under the title." }
+      - { label: "Picture (optional)", name: "image", widget: "image", required: false, hint: "A photo or artwork shown at the top of this piece." }
+      - { label: "Save as draft (hide from site)", name: "draft", widget: "boolean", default: false }
+      - { label: "Body", name: "body", widget: "markdown", hint: "Write your poem or essay here." }
+
+  - name: "testimonials"
+    label: "Testimonials"
+    label_singular: "Testimonial"
+    folder: "src/content/testimonials"
+    create: true
+    delete: true
+    slug: "{{name}}"
+    summary: "{{name}}  ·  {{role}}"
+    sortable_fields: ["order", "name"]
+    fields:
+      - { label: "Name", name: "name", widget: "string", hint: "Who said it — e.g. 'A. Smith'." }
+      - { label: "Role (optional)", name: "role", widget: "string", required: false, hint: "e.g. 'Philosophy undergraduate' or 'Private student'." }
+      - { label: "Order", name: "order", widget: "number", default: 0, value_type: "int", hint: "Lower numbers appear first. The first one is featured on the home page." }
+      - { label: "Hide from site", name: "draft", widget: "boolean", default: false }
+      - { label: "The testimonial", name: "body", widget: "markdown", hint: "The quote itself." }
+
+  - name: "pages"
+    label: "Pages"
+    files:
+      - name: "about"
+        label: "About page"
+        file: "src/content/pages/about.md"
+        fields:
+          - { label: "Title", name: "title", widget: "hidden", default: "About" }
+          - { label: "About text", name: "body", widget: "markdown", hint: "The biography shown on the About page." }
+      - name: "tutoring"
+        label: "Tutoring page"
+        file: "src/content/pages/tutoring.md"
+        fields:
+          - { label: "Title", name: "title", widget: "hidden", default: "Tutoring" }
+          - { label: "Tutoring text", name: "body", widget: "markdown", hint: "The description shown on the Tutoring page." }

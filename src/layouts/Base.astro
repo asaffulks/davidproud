@@ -1,0 +1,66 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+const {
+  title = 'David Proud',
+  description = 'Poetry, philosophy, and tutoring by David Proud.',
+} = Astro.props;
+const siteTitle = 'David Proud';
+const path = Astro.url.pathname;
+
+const nav = [
+  { href: '/', label: 'Home', exact: true },
+  { href: '/about/', label: 'About' },
+  { href: '/writings/', label: 'Writings' },
+  { href: '/tutoring/', label: 'Tutoring' },
+  { href: '/testimonials/', label: 'Testimonials' },
+  { href: '/contact/', label: 'Contact' },
+];
+const current = (item: (typeof nav)[number]) =>
+  item.exact ? path === item.href : path.startsWith(item.href);
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title === siteTitle ? title : `${title} — ${siteTitle}`}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#14110c" />
+  </head>
+  <body>
+    <header class="site-head">
+      <div class="site-mark" aria-hidden="true"></div>
+      <p class="site-title"><a href="/">David Proud</a></p>
+      <p class="site-tagline">Poetry &middot; Philosophy</p>
+      <nav class="site-nav">
+        {nav.map((item) => (
+          <a href={item.href} aria-current={current(item) ? 'page' : undefined}>{item.label}</a>
+        ))}
+      </nav>
+      <slot name="hero" />
+    </header>
+
+    <main class="wrap">
+      <slot />
+    </main>
+
+    <footer class="site-foot">
+      <div class="foot-fleuron" aria-hidden="true"></div>
+      <p class="foot-title">David Proud</p>
+      <p><em>The owl of Minerva spreads its wings only with the falling of the dusk.</em></p>
+      <nav class="foot-nav">
+        {nav.map((item) => <a href={item.href}>{item.label}</a>)}
+      </nav>
+      <p>&copy; {new Date().getFullYear()} David Proud. All rights reserved.</p>
+    </footer>
+  </body>
+</html>

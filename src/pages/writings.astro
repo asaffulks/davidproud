@@ -1,0 +1,65 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+
+const writings = (await getCollection('writings', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const [latest, ...earlier] = writings;
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+
+const roman = (n: number) => {
+  const table: [number, string][] = [
+    [1000, 'M'], [900, 'CM'], [500, 'D'], [400, 'CD'], [100, 'C'], [90, 'XC'],
+    [50, 'L'], [40, 'XL'], [10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I'],
+  ];
+  let out = '';
+  for (const [v, s] of table) while (n >= v) { out += s; n -= v; }
+  return out;
+};
+---
+<Base title="Writings" description="Poems, essays, and reflections by David Proud.">
+  <div class="piece-head">
+    <span class="piece-cat">The Collection</span>
+    <h1 class="piece-title">Writings</h1>
+  </div>
+
+  {latest && (
+    <section class="featured">
+      <span class="entry-cat">{latest.data.category} &middot; Latest</span>
+      <h2 class="featured-title">
+        <a href={`/writing/${latest.id}/`}>{latest.data.title}</a>
+      </h2>
+      {latest.data.excerpt && <p class="featured-excerpt">{latest.data.excerpt}</p>}
+      <a class="read-on" href={`/writing/${latest.id}/`}>Read on</a>
+    </section>
+  )}
+
+  {earlier.length > 0 && (
+    <>
+      <hr class="fleuron" />
+      <p class="section-label">Earlier writings</p>
+      <ul class="entries">
+        {earlier.map((w, i) => (
+          <li class="entry">
+            <span class="entry-no" aria-hidden="true">{roman(earlier.length - i)}</span>
+            <div>
+              <span class="entry-cat">{w.data.category}</span>
+              <h2 class="entry-title">
+                <a href={`/writing/${w.id}/`}>{w.data.title}</a>
+              </h2>
+              <p class="entry-meta">{fmt(w.data.date)}</p>
+              {w.data.excerpt && <p class="entry-excerpt">{w.data.excerpt}</p>}
+            </div>
+          </li>
+        ))}
+      </ul>
+    </>
+  )}
+
+  {writings.length === 0 && (
+    <p class="section-label" style="margin-top:2rem;">Nothing published yet — check back soon.</p>
+  )}
+</Base>

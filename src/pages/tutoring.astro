@@ -1,0 +1,42 @@
+---
+import { getCollection, getEntry, render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+
+const page = await getEntry('pages', 'tutoring');
+if (!page) throw new Error('Missing pages/tutoring.md');
+const { Content } = await render(page);
+
+const testimonials = (await getCollection('testimonials', ({ data }) => !data.draft))
+  .sort((a, b) => a.data.order - b.data.order);
+const featured = testimonials[0];
+const FeaturedQuote = featured ? (await render(featured)).Content : null;
+---
+<Base title="Tutoring" description="One-to-one philosophy tutoring with David Proud — Hegel, German idealism, and the history of Western thought.">
+  <div class="piece-head">
+    <span class="piece-cat">One-to-one</span>
+    <h1 class="piece-title">Philosophy Tutoring</h1>
+  </div>
+
+  <div class="prose dropcap">
+    <Content />
+  </div>
+
+  {FeaturedQuote && (
+    <>
+      <hr class="fleuron" />
+      <div class="pull-quote">
+        <blockquote class="testimonial-quote"><FeaturedQuote /></blockquote>
+        <p class="testimonial-attrib">
+          {featured.data.name}
+          {featured.data.role && <span class="role"> &middot; {featured.data.role}</span>}
+        </p>
+      </div>
+    </>
+  )}
+
+  <div class="home-more">
+    <a class="btn btn--paper" href="/contact/">Enquire about lessons</a>
+  </div>
+
+  <div class="end-mark" aria-hidden="true"></div>
+</Base>

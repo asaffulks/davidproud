@@ -1,0 +1,23 @@
+---
+import { getEntry, render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+
+const page = await getEntry('pages', 'about');
+if (!page) throw new Error('Missing pages/about.md');
+const { Content } = await render(page);
+---
+<Base title="About" description="About David Proud — poet and writer on philosophy.">
+  <div class="piece-head">
+    <span class="piece-cat">About</span>
+    <h1 class="piece-title">David Proud</h1>
+  </div>
+
+  <div class="prose dropcap">
+    <!-- David's photo: put it in /admin (or public/uploads/) and
+         uncomment: <img class="about-photo" src="/uploads/david.jpg" alt="David Proud" /> -->
+    <Content />
+  </div>
+
+  <div class="end-mark" aria-hidden="true"></div>
+  <a class="back" href="/writings/">The Writings</a>
+</Base>

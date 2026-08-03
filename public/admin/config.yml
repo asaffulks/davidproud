@@ -6,8 +6,8 @@ backend:
   name: github
   repo: asaffulks/davidproud
   branch: main
-  # Sveltia's hosted OAuth handles login; if we self-host the auth relay,
-  # base_url is set here. Left default for now.
+  # Self-hosted OAuth relay (sveltia-cms-auth Worker on Asaf's Cloudflare).
+  base_url: https://sveltia-cms-auth.asaffulks.workers.dev
 
 # Lets David preview/edit against a local copy during setup without logging in.
 local_backend: true

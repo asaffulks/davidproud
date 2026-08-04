@@ -13,3 +13,6 @@ npm-debug.log*
 # os
 .DS_Store
 Thumbs.db
+
+# local test artifacts
+_*.png

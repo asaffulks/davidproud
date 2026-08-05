@@ -1,5 +1,5 @@
 ---
-name: Mollie Lord(
+name: Mollie Lord
 role: Painter / Healing through Art
 order: 1
 draft: false

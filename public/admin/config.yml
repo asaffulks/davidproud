@@ -33,7 +33,7 @@ collections:
       - label: "Type"
         name: "category"
         widget: "select"
-        options: ["Poetry", "Philosophy", "Essay"]
+        options: ["Poetry", "Philosophy"]
         default: "Poetry"
       - { label: "Short summary (optional)", name: "excerpt", widget: "string", required: false, hint: "One line shown on the home page under the title." }
       - { label: "Picture (optional)", name: "image", widget: "image", required: false, hint: "A photo or artwork shown at the top of this piece." }

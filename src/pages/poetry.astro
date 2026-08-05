@@ -2,10 +2,10 @@
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 
-const writings = (await getCollection('writings', ({ data }) => !data.draft && data.category !== 'Poetry'))
+const poems = (await getCollection('writings', ({ data }) => !data.draft && data.category === 'Poetry'))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
-const [latest, ...earlier] = writings;
+const [latest, ...earlier] = poems;
 
 const fmt = (d: Date) =>
   d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -20,15 +20,15 @@ const roman = (n: number) => {
   return out;
 };
 ---
-<Base title="Writings" description="Philosophical writings and reflections by David Proud.">
+<Base title="Poetry" description="Poems by David Proud.">
   <div class="piece-head">
     <span class="piece-cat">The Collection</span>
-    <h1 class="piece-title">Writings</h1>
+    <h1 class="piece-title">Poetry</h1>
   </div>
 
   {latest && (
     <section class="featured">
-      <span class="entry-cat">{latest.data.category} &middot; Latest</span>
+      <span class="entry-cat">Latest</span>
       <h2 class="featured-title">
         <a href={`/writing/${latest.id}/`}>{latest.data.title}</a>
       </h2>
@@ -40,13 +40,12 @@ const roman = (n: number) => {
   {earlier.length > 0 && (
     <>
       <hr class="fleuron" />
-      <p class="section-label">Earlier writings</p>
+      <p class="section-label">Earlier poems</p>
       <ul class="entries">
         {earlier.map((w, i) => (
           <li class="entry">
             <span class="entry-no" aria-hidden="true">{roman(earlier.length - i)}</span>
             <div>
-              <span class="entry-cat">{w.data.category}</span>
               <h2 class="entry-title">
                 <a href={`/writing/${w.id}/`}>{w.data.title}</a>
               </h2>
@@ -59,7 +58,7 @@ const roman = (n: number) => {
     </>
   )}
 
-  {writings.length === 0 && (
+  {poems.length === 0 && (
     <p class="section-label" style="margin-top:2rem;">Nothing published yet — check back soon.</p>
   )}
 </Base>

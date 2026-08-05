@@ -7,7 +7,7 @@ const writings = defineCollection({
   schema: z.object({
     title: z.string(),
     date: z.coerce.date(),
-    category: z.enum(['Poetry', 'Philosophy', 'Essay']).default('Poetry'),
+    category: z.enum(['Poetry', 'Philosophy']).default('Poetry'),
     excerpt: z.string().optional(),
     image: z.string().optional(),
     draft: z.boolean().default(false),

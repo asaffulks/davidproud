@@ -7,7 +7,7 @@ interface Props {
 }
 const {
   title = 'David Proud',
-  description = 'Poetry, philosophy, and tutoring by David Proud.',
+  description = 'Philosophy, poetry, and tutoring by David Proud.',
 } = Astro.props;
 const siteTitle = 'David Proud';
 const path = Astro.url.pathname;
@@ -16,6 +16,7 @@ const nav = [
   { href: '/', label: 'Home', exact: true },
   { href: '/about/', label: 'About' },
   { href: '/writings/', label: 'Writings' },
+  { href: '/poetry/', label: 'Poetry' },
   { href: '/tutoring/', label: 'Tutoring' },
   { href: '/testimonials/', label: 'Testimonials' },
   { href: '/contact/', label: 'Contact' },
@@ -40,7 +41,7 @@ const current = (item: (typeof nav)[number]) =>
     <header class="site-head">
       <div class="site-mark" aria-hidden="true"></div>
       <p class="site-title"><a href="/">David Proud</a></p>
-      <p class="site-tagline">Poetry &middot; Philosophy</p>
+      <p class="site-tagline">Philosopher</p>
       <nav class="site-nav">
         {nav.map((item) => (
           <a href={item.href} aria-current={current(item) ? 'page' : undefined}>{item.label}</a>

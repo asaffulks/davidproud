@@ -12,6 +12,8 @@ Orcid: https://orcid.org/0009-0005-8248-4794
 
 [https://liverpool.academia.edu/DavidProud](https://liverpool.academia.edu/DavidProud)
 
+[https://hegelacademy.medium.com](https://hegelacademy.medium.com/)
+
 Plus a PGCE (Secondary) ICT from the University of Huddersfield.
 
 And a MSc in Software Development from the University of Huddersfield.

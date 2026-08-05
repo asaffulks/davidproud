@@ -1,17 +1,41 @@
 ---
-title: On Stillness
+title: What is a woman?
 date: 2026-08-01
 category: Poetry
-excerpt: A short poem about the quiet that arrives when we stop asking anything of it.
+excerpt: ''
 draft: false
 ---
 
-Morning does not hurry.
-It sets the light down slowly,
-one field at a time,
+Poem for International Woman’s Day
+ 
+Fri, 8 Mar 2024 
+ 
+‘What is a woman?’
+ 
+‘'Tis beauty that doth oft make women proud’,
 
-and waits — the way a patient friend waits —
-for us to notice
-that nothing needed doing after all.
+‘Tis said, yet we know of women once defined
 
-*(Placeholder poem. Replace with David's own work.)*
+With much more than this are they endowed.
+
+In both sense and sensibility are they refined.
+
+For a double aspect is displayed in their sense.
+
+The pragmatic, to things get done as they must.
+
+And fluid thinking that itself outreaches, hence
+
+Fixed thoughts encounter with a counter-thrust.
+
+Ah! The elegance and charm of their sensibility.
+
+At once a lightness of touch, a depth of feeling,
+
+Much as a woman’s heart retains its mystery,
+
+Elevated conceptions in their poetry revealing.
+
+Women then are the healers and the educators.
+
+In life’s gallery of every noble thing the curators.

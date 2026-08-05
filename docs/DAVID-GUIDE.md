@@ -9,11 +9,11 @@
    *(your browser will offer to remember it — say yes; after that it's one click)*
 
 ## To publish a new poem or essay
-1. Click **Writings** → **Create** (New Writing)
+1. Poems go under **Poetry**; philosophy pieces go under **Writings**.
+   Click the one you want → **Create**
 2. Fill in:
    - **Title** — the name of the piece
    - **Date** — today (already filled in)
-   - **Type** — Poetry, Philosophy, or Essay
    - **Short summary** — one line shown on the home page (optional)
    - **Picture** — drag a photo in if you'd like one (optional)
    - **Body** — the writing itself
@@ -22,14 +22,16 @@
    *(If you don't see it, refresh the page.)*
 
 ## To edit or remove something
-- **Edit:** click Writings → click the piece → change it → **Publish**
+- **Edit:** click Poetry or Writings → click the piece → change it → **Publish**
 - **Hide without deleting:** open the piece, switch on **Save as draft**, Publish
 - **Delete:** open the piece → Delete
 
 ## You can also edit…
 - **Testimonials** — add kind words from students (Testimonials → Create)
+- **Home page** — the introduction and short blurbs on the front page (Pages → Home page)
 - **About page** — your biography (Pages → About page)
 - **Tutoring page** — your tutoring description (Pages → Tutoring page)
+- **Contact page** — your email and LinkedIn (Pages → Contact page)
 
 ## Poems: keeping your line breaks
 In the Body box, press **Enter once** for a new line within a stanza,

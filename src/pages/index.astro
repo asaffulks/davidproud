@@ -1,6 +1,10 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { getCollection, getEntry, render } from 'astro:content';
 import Base from '../layouts/Base.astro';
+
+const home = await getEntry('pages', 'home');
+if (!home) throw new Error('Missing pages/home.md');
+const { Content: HomeIntro } = await render(home);
 
 const writings = (await getCollection('writings', ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
@@ -25,10 +29,9 @@ const fmt = (d: Date) =>
         </blockquote>
         <cite>G. W. F. Hegel</cite>
       </div>
-      <p class="hero-lede">
-        Poems and essays in the company of the great questions — and one-to-one
-        philosophy tutoring, from first principles to the <em>Phenomenology</em>.
-      </p>
+      <div class="hero-lede">
+        <HomeIntro />
+      </div>
       <div class="hero-ctas">
         <a class="btn" href="/writings/">Read the Writings</a>
         <a class="btn btn--ghost" href="/tutoring/">Philosophy Tutoring</a>
@@ -81,10 +84,7 @@ const fmt = (d: Date) =>
   <section class="band">
     <p class="section-label">Tutoring</p>
     <h2 class="band-title">Read philosophy properly,<br />in good company.</h2>
-    <p class="band-text">
-      One-to-one tutoring in philosophy — Hegel, German idealism, and the
-      history of Western thought. For students, and for the simply curious.
-    </p>
+    <p class="band-text">{home.data.tutoringText}</p>
     <a class="btn" href="/tutoring/">About Tutoring</a>
     <a class="btn btn--ghost" href="/contact/">Enquire</a>
   </section>
@@ -92,7 +92,7 @@ const fmt = (d: Date) =>
   <section class="home-section" style="text-align:center; margin-bottom:1rem;">
     <p class="section-label" style="margin-bottom:1rem;">Correspondence</p>
     <p style="font-style:italic; color:var(--ink-soft); max-width:28rem; margin:0 auto 1.6rem;">
-      Questions, readings, invitations, and conversation are always welcome.
+      {home.data.contactText}
     </p>
     <a class="btn btn--paper" href="/contact/">Get in touch</a>
   </section>

@@ -25,11 +25,17 @@ const testimonials = defineCollection({
   }),
 });
 
-// Editable page bodies (About, Tutoring) so David can revise them in /admin.
+// Editable page content (Home, About, Tutoring, Contact) so David can revise it in /admin.
 const pages = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/pages' }),
   schema: z.object({
     title: z.string(),
+    // Contact page
+    email: z.string().optional(),
+    linkedin: z.string().optional(),
+    // Home page
+    tutoringText: z.string().optional(),
+    contactText: z.string().optional(),
   }),
 });
 

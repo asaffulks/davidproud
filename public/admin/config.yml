@@ -16,29 +16,47 @@ local_backend: true
 media_folder: "public/uploads"
 public_folder: "/uploads"
 
-# A friendly editing experience — one collection: "Writings".
+# A friendly editing experience. Writings (philosophy) and Poetry are two views
+# over the same folder, split by the hidden "category" field — each tab stamps
+# the right category automatically when David creates a new piece.
 collections:
   - name: "writings"
     label: "Writings"
     label_singular: "Writing"
     folder: "src/content/writings"
+    filter: { field: "category", value: "Philosophy" }
     create: true
     delete: true
     slug: "{{slug}}"
-    summary: "{{title}}  ·  {{category}}  ·  {{date}}"
+    summary: "{{title}}  ·  {{date}}"
     sortable_fields: ["date", "title"]
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "DD MMMM YYYY", time_format: false }
-      - label: "Type"
-        name: "category"
-        widget: "select"
-        options: ["Poetry", "Philosophy"]
-        default: "Poetry"
+      - { label: "Type", name: "category", widget: "hidden", default: "Philosophy" }
       - { label: "Short summary (optional)", name: "excerpt", widget: "string", required: false, hint: "One line shown on the home page under the title." }
       - { label: "Picture (optional)", name: "image", widget: "image", required: false, hint: "A photo or artwork shown at the top of this piece." }
       - { label: "Save as draft (hide from site)", name: "draft", widget: "boolean", default: false }
-      - { label: "Body", name: "body", widget: "markdown", hint: "Write your poem or essay here." }
+      - { label: "Body", name: "body", widget: "markdown", hint: "Write your essay or article here." }
+
+  - name: "poetry"
+    label: "Poetry"
+    label_singular: "Poem"
+    folder: "src/content/writings"
+    filter: { field: "category", value: "Poetry" }
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    summary: "{{title}}  ·  {{date}}"
+    sortable_fields: ["date", "title"]
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "DD MMMM YYYY", time_format: false }
+      - { label: "Type", name: "category", widget: "hidden", default: "Poetry" }
+      - { label: "Short summary (optional)", name: "excerpt", widget: "string", required: false, hint: "One line shown on the home page under the title." }
+      - { label: "Picture (optional)", name: "image", widget: "image", required: false, hint: "A photo or artwork shown at the top of this poem." }
+      - { label: "Save as draft (hide from site)", name: "draft", widget: "boolean", default: false }
+      - { label: "Body", name: "body", widget: "markdown", hint: "Write your poem here." }
 
   - name: "testimonials"
     label: "Testimonials"
@@ -59,6 +77,14 @@ collections:
   - name: "pages"
     label: "Pages"
     files:
+      - name: "home"
+        label: "Home page"
+        file: "src/content/pages/home.md"
+        fields:
+          - { label: "Title", name: "title", widget: "hidden", default: "Home" }
+          - { label: "Tutoring blurb", name: "tutoringText", widget: "text", hint: "The short tutoring paragraph in the dark band on the home page." }
+          - { label: "Correspondence line", name: "contactText", widget: "text", hint: "The invitation line above the 'Get in touch' button." }
+          - { label: "Introduction", name: "body", widget: "markdown", hint: "The short introduction shown under the Hegel quote at the top of the home page." }
       - name: "about"
         label: "About page"
         file: "src/content/pages/about.md"
@@ -71,3 +97,11 @@ collections:
         fields:
           - { label: "Title", name: "title", widget: "hidden", default: "Tutoring" }
           - { label: "Tutoring text", name: "body", widget: "markdown", hint: "The description shown on the Tutoring page." }
+      - name: "contact"
+        label: "Contact page"
+        file: "src/content/pages/contact.md"
+        fields:
+          - { label: "Title", name: "title", widget: "hidden", default: "Contact" }
+          - { label: "Email", name: "email", widget: "string", required: false, hint: "Your email address, shown on the Contact page. Leave blank to show nothing yet." }
+          - { label: "LinkedIn", name: "linkedin", widget: "string", required: false, hint: "The full web address of your LinkedIn profile, e.g. https://www.linkedin.com/in/yourname" }
+          - { label: "Intro text", name: "body", widget: "markdown", hint: "The welcome line at the top of the Contact page." }

@@ -1,5 +1,17 @@
 ---
+import { getEntry, render } from 'astro:content';
 import Base from '../layouts/Base.astro';
+
+const page = await getEntry('pages', 'contact');
+if (!page) throw new Error('Missing pages/contact.md');
+const { Content } = await render(page);
+
+const email = page.data.email?.trim();
+const linkedin = page.data.linkedin?.trim();
+// Show a tidy label like "linkedin.com/in/davidproud" instead of the raw URL.
+const linkedinLabel = linkedin
+  ? linkedin.replace(/^https?:\/\/(www\.)?/, '').replace(/\/+$/, '')
+  : '';
 ---
 <Base title="Contact" description="Get in touch with David Proud — correspondence, readings, and tutoring enquiries.">
   <div class="piece-head">
@@ -8,20 +20,26 @@ import Base from '../layouts/Base.astro';
   </div>
 
   <div class="contact-card">
-    <p class="lead">
-      Questions, readings, tutoring enquiries, and conversation
-      are always welcome.
-    </p>
+    <div class="lead">
+      <Content />
+    </div>
 
     <ul class="contact-lines">
-      <!-- PLACEHOLDER: swap for David's real email + LinkedIn once provided. -->
       <li>
         <span class="contact-label">Email</span>
-        <span class="contact-value"><em>(David's email — to be added)</em></span>
+        <span class="contact-value">
+          {email
+            ? <a href={`mailto:${email}`}>{email}</a>
+            : <em>(David's email — to be added)</em>}
+        </span>
       </li>
       <li>
         <span class="contact-label">LinkedIn</span>
-        <span class="contact-value"><em>(David's LinkedIn — to be added)</em></span>
+        <span class="contact-value">
+          {linkedin
+            ? <a href={linkedin} target="_blank" rel="noopener">{linkedinLabel}</a>
+            : <em>(David's LinkedIn — to be added)</em>}
+        </span>
       </li>
     </ul>
   </div>

@@ -480,6 +480,8 @@ a { color: var(--gold-deep); text-underline-offset: 3px; }
   line-height: 1.7;
   color: var(--dusk-soft);
 }
+.hero-lede p { margin: 0; }
+.hero-lede p + p { margin-top: 0.9em; }
 .hero-ctas { margin-top: 2.3rem; }
 
 /* ================= Buttons ================= */
@@ -598,6 +600,8 @@ a { color: var(--gold-deep); text-underline-offset: 3px; }
   margin: 0 auto;
 }
 .contact-card .lead { font-size: 1.3rem; font-style: italic; color: var(--ink-soft); }
+.contact-card .lead p { margin: 0; }
+.contact-card .lead p + p { margin-top: 0.9em; }
 .contact-lines { margin: 2.4rem 0 0; padding: 0; list-style: none; }
 .contact-lines li {
   padding: 1.4rem 0;

@@ -11,3 +11,5 @@ Skilled in philosophy, lecturing, editing, public speaking, and academic writing
 Orcid: https://orcid.org/0009-0005-8248-4794
 
 [https://liverpool.academia.edu/DavidProud](https://liverpool.academia.edu/DavidProud)
+
+Plus a PGCE (Secondary) ICT from the University of Huddersfield.

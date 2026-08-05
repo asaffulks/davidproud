@@ -8,4 +8,6 @@ At present with the Institute of Irish Studies, University of Liverpool, doing a
 
 Skilled in philosophy, lecturing, editing, public speaking, and academic writing.  I have published articles on philosophy. Strong education professional with an MRes in Hegel and Joyce from the Institute of Irish Studies, University of Liverpool,  MPhil in Philosophy from the Open University, an MA in Philosophy  from The University of Sheffield, and a BA in Philosophy from The University of Leeds.
 
- Orcid: https://orcid.org/0009-0005-8248-4794
+Orcid: https://orcid.org/0009-0005-8248-4794
+
+[https://liverpool.academia.edu/DavidProud](https://liverpool.academia.edu/DavidProud)

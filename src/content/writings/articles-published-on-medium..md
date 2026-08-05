@@ -7,4 +7,4 @@ image: /uploads/engraving-Georg-Wilhelm-Friedrich-Hegel-Lazarus-Gottlieb.webp
 draft: false
 ---
 
-Including 180 artices on Hegel's philosophical system.
+Including 180 artices on Hegel's entire philosophical system.

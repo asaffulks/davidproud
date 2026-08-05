@@ -3,15 +3,16 @@ title: What is a woman?
 date: 2026-08-01
 category: Poetry
 excerpt: ''
+image: /uploads/man_ray_-_aurelien_1944_photographic_print.png
 draft: false
 ---
 
 Poem for International Woman’s Day
- 
+
 Fri, 8 Mar 2024 
- 
+
 ‘What is a woman?’
- 
+
 ‘'Tis beauty that doth oft make women proud’,
 
 ‘Tis said, yet we know of women once defined

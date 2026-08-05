@@ -11,8 +11,6 @@ Poem for International Woman’s Day
 
 Fri, 8 Mar 2024 
 
-‘What is a woman?’
-
 ‘'Tis beauty that doth oft make women proud’,
 
 ‘Tis said, yet we know of women once defined

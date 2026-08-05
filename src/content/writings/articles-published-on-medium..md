@@ -2,9 +2,9 @@
 title: Articles published on Medium.
 date: 2026-08-05
 category: Philosophy
-excerpt: https://hegelacademy.medium.com/
+excerpt: Including 180 articles on Hegel's entire philosophical system.
 image: /uploads/engraving-Georg-Wilhelm-Friedrich-Hegel-Lazarus-Gottlieb.webp
 draft: false
 ---
 
-Including 180 artices on Hegel's entire philosophical system.
+[https://hegelacademy.medium.com/](https://hegelacademy.medium.com/)

@@ -1,7 +1,7 @@
 ---
 name: Kira Fulks
 role: Publisher, artist, Poet
-order: 4
+order: 3
 draft: false
 ---
 

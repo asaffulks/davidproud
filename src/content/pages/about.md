@@ -2,8 +2,10 @@
 title: About
 ---
 
-David Proud is a philosopher, writer, and educator with a particular interest in G. W. F. Hegel and the tradition of German Idealism. His work brings together rigorous philosophical inquiry and a deep interest in language and poetry.
+Experienced instructor with a demonstrated history of working in education. 
 
-He has taught and lectured in philosophy, written extensively on academic and philosophical subjects, and published many articles on philosophy.
+At present with the Institute of Irish Studies, University of Liverpool, doing a PhD on Hegel and Joyce. 
 
-David holds an MPhil in Philosophy from The Open University, an MA in Philosophy from the University of Sheffield, and a BA in Philosophy from the University of Leeds.
+Skilled in philosophy, lecturing, editing, public speaking, and academic writing.  I have published articles on philosophy. Strong education professional with an MRes in Hegel and Joyce from the Institute of Irish Studies, University of Liverpool,  MPhil in Philosophy from the Open University, an MA in Philosophy  from The University of Sheffield, and a BA in Philosophy from The University of Leeds.
+
+ Orcid: https://orcid.org/0009-0005-8248-4794

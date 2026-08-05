@@ -7,4 +7,4 @@ image: /uploads/engraving-Georg-Wilhelm-Friedrich-Hegel-Lazarus-Gottlieb.webp
 draft: false
 ---
 
-[https://hegelacademy.medium.com/](https://hegelacademy.medium.com/)
+[https://hegelacademy.medium.com](https://hegelacademy.medium.com/)

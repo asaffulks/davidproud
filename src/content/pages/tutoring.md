@@ -2,7 +2,9 @@
 title: Tutoring
 ---
 
-David offers one-to-one tutoring in philosophy — from first encounters with
+David offers one-to-one tutoring in philosophy — from first encounters with![](/uploads/Screenshot%202026-08-06%20023743.png)
+
+
 the great questions to close reading of difficult texts, with a particular
 strength in Hegel, German idealism, and the history of Western thought.
 

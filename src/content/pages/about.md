@@ -16,4 +16,4 @@ Orcid: https://orcid.org/0009-0005-8248-4794
 
 Plus a PGCE (Secondary) ICT from the University of Huddersfield.
 
-And a MSc in Software Development from the University of Huddersfield.![](/uploads/Screenshot%202026-08-06%20023743.png "University of Liverpool Irish Studies Prize (MA Dissertation)")
+And a MSc in Software Development from the University of Huddersfield.

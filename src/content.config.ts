@@ -8,6 +8,7 @@ const writings = defineCollection({
     title: z.string(),
     date: z.coerce.date(),
     category: z.enum(['Poetry', 'Philosophy']).default('Poetry'),
+    topic: z.string().optional(),  // groups writings on /writings/ — e.g. "Hegel", "James Joyce"
     excerpt: z.string().optional(),
     image: z.string().optional(),
     draft: z.boolean().default(false),

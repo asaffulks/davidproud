@@ -14,6 +14,10 @@
 2. Fill in:
    - **Title** — the name of the piece
    - **Date** — today (already filled in)
+   - **Topic** — for Writings only (optional): e.g. **Hegel**, **James Joyce**,
+     **General Philosophy**. Pieces with the same topic are grouped together on
+     the Writings page. Reuse an existing topic *spelled exactly the same*, or
+     type a new one to start a new group.
    - **Short summary** — one line shown on the home page (optional)
    - **Picture** — drag a photo in if you'd like one (optional)
    - **Body** — the writing itself
@@ -27,6 +31,9 @@
 - **Delete:** open the piece → Delete
 
 ## You can also edit…
+- **Photos** — add photographs to the Photos page (Photos → Create: give it a
+  title, drag the picture in, add a caption if you like, Publish). Upload
+  straight from your phone or camera — pictures are shrunk automatically.
 - **Testimonials** — add kind words from students (Testimonials → Create)
 - **Home page** — the introduction and short blurbs on the front page (Pages → Home page)
 - **About page** — your biography (Pages → About page)

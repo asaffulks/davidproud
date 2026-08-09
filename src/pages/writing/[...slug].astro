@@ -23,7 +23,7 @@ const fmt = (d: Date) =>
 <Base title={entry.data.title} description={entry.data.excerpt}>
   <article>
     <div class="piece-head">
-      <span class="piece-cat">{entry.data.category}</span>
+      <span class="piece-cat">{entry.data.topic ?? entry.data.category}</span>
       <h1 class="piece-title">{entry.data.title}</h1>
       <p class="piece-date">{fmt(entry.data.date)}</p>
     </div>

@@ -417,6 +417,34 @@ a { color: var(--gold-deep); text-underline-offset: 3px; }
   box-shadow: 0 0 0 6px var(--paper), 0 0 0 7px var(--rule);
 }
 
+/* ================= Topic filter chips (Writings) ================= */
+
+.topics {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  column-gap: 1.5rem;
+  row-gap: 0.6rem;
+  margin: -0.8rem 0 3rem;
+}
+.topic-chip {
+  appearance: none;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  padding: 0 0 4px;
+  cursor: pointer;
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.26em;
+  color: var(--ink-soft);
+  transition: color .25s, border-color .25s;
+}
+.topic-chip:hover { color: var(--gold-deep); }
+.topic-chip[aria-pressed="true"] { color: var(--gold-deep); border-color: var(--gold); }
+
 /* ================= Photos ================= */
 
 .gallery {

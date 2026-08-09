@@ -5,7 +5,18 @@ import Base from '../layouts/Base.astro';
 const writings = (await getCollection('writings', ({ data }) => !data.draft && data.category !== 'Poetry'))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
-const [latest, ...earlier] = writings;
+const [latest] = writings;
+
+// Topics for the filter chips — matched case-insensitively, shown in the
+// casing of their first appearance, alphabetical. No topics → no chips.
+const topics: string[] = [];
+for (const w of writings) {
+  const t = w.data.topic?.trim();
+  if (t && !topics.some((x) => x.toLowerCase() === t.toLowerCase())) topics.push(t);
+}
+topics.sort((a, b) => a.localeCompare(b));
+
+const norm = (t?: string) => (t ?? '').trim().toLowerCase();
 
 const fmt = (d: Date) =>
   d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -26,9 +37,18 @@ const roman = (n: number) => {
     <h1 class="piece-title">Writings</h1>
   </div>
 
+  {topics.length > 0 && (
+    <nav class="topics" aria-label="Filter writings by topic">
+      <button class="topic-chip" type="button" data-topic="" aria-pressed="true">All</button>
+      {topics.map((t) => (
+        <button class="topic-chip" type="button" data-topic={norm(t)} aria-pressed="false">{t}</button>
+      ))}
+    </nav>
+  )}
+
   {latest && (
-    <section class="featured">
-      <span class="entry-cat">{latest.data.category} &middot; Latest</span>
+    <section class="featured" data-topic={norm(latest.data.topic)}>
+      <span class="entry-cat">{latest.data.topic ?? latest.data.category} &middot; Latest</span>
       <h2 class="featured-title">
         <a href={`/writing/${latest.id}/`}>{latest.data.title}</a>
       </h2>
@@ -37,29 +57,66 @@ const roman = (n: number) => {
     </section>
   )}
 
-  {earlier.length > 0 && (
+  {writings.length > 1 && (
     <>
-      <hr class="fleuron" />
-      <p class="section-label">Earlier writings</p>
-      <ul class="entries">
-        {earlier.map((w, i) => (
-          <li class="entry">
-            <span class="entry-no" aria-hidden="true">{roman(earlier.length - i)}</span>
-            <div>
-              <span class="entry-cat">{w.data.category}</span>
-              <h2 class="entry-title">
-                <a href={`/writing/${w.id}/`}>{w.data.title}</a>
-              </h2>
-              <p class="entry-meta">{fmt(w.data.date)}</p>
-              {w.data.excerpt && <p class="entry-excerpt">{w.data.excerpt}</p>}
-            </div>
-          </li>
-        ))}
-      </ul>
+      <hr class="fleuron" id="list-rule" />
+      <p class="section-label" id="list-label" data-default-label="Earlier writings">Earlier writings</p>
     </>
+  )}
+
+  {writings.length > 0 && (
+    <ul class="entries">
+      {writings.map((w, i) => (
+        <li class="entry" data-topic={norm(w.data.topic)} hidden={i === 0}>
+          <span class="entry-no" aria-hidden="true">{roman(writings.length - i)}</span>
+          <div>
+            <span class="entry-cat">{w.data.topic ?? w.data.category}</span>
+            <h2 class="entry-title">
+              <a href={`/writing/${w.id}/`}>{w.data.title}</a>
+            </h2>
+            <p class="entry-meta">{fmt(w.data.date)}</p>
+            {w.data.excerpt && <p class="entry-excerpt">{w.data.excerpt}</p>}
+          </div>
+        </li>
+      ))}
+    </ul>
   )}
 
   {writings.length === 0 && (
     <p class="section-label" style="margin-top:2rem;">Nothing published yet — check back soon.</p>
   )}
+
+  <script>
+    // Topic filtering. The newest piece lives in the featured card AND as the
+    // first (always-hidden) list entry; the featured card simply hides when it
+    // doesn't belong to the selected topic.
+    const chips = document.querySelectorAll<HTMLButtonElement>('.topic-chip');
+    const featured = document.querySelector<HTMLElement>('.featured');
+    const entries = document.querySelectorAll<HTMLElement>('.entries .entry');
+    const rule = document.getElementById('list-rule');
+    const label = document.getElementById('list-label');
+
+    chips.forEach((chip) => chip.addEventListener('click', () => {
+      const topic = chip.dataset.topic ?? '';
+      chips.forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
+
+      if (featured) featured.hidden = topic !== '' && featured.dataset.topic !== topic;
+
+      let visible = 0;
+      entries.forEach((li, i) => {
+        const hide = i === 0 || (topic !== '' && li.dataset.topic !== topic);
+        li.hidden = hide;
+        if (!hide) visible++;
+      });
+
+      if (rule && label) {
+        const showList = visible > 0;
+        rule.hidden = !showList;
+        label.hidden = !showList;
+        label.textContent = topic === ''
+          ? (label.dataset.defaultLabel ?? 'Earlier writings')
+          : (chip.textContent ?? '');
+      }
+    }));
+  </script>
 </Base>

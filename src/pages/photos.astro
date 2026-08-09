@@ -1,0 +1,39 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+
+const photos = (await getCollection('photos', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+<Base title="Photos" description="Photographs by David Proud.">
+  <div class="piece-head">
+    <span class="piece-cat">The Gallery</span>
+    <h1 class="piece-title">Photos</h1>
+  </div>
+
+  {photos.length > 0 && (
+    <ul class="gallery">
+      {photos.map((p) => (
+        <li>
+          <figure>
+            <a href={p.data.image} aria-label={`View “${p.data.title}” full size`}>
+              <img src={p.data.image} alt={p.data.title} loading="lazy" />
+            </a>
+            <figcaption>
+              <span class="gallery-title">{p.data.title}</span>
+              {p.data.caption && <span class="gallery-caption">{p.data.caption}</span>}
+              <span class="gallery-date">{fmt(p.data.date)}</span>
+            </figcaption>
+          </figure>
+        </li>
+      ))}
+    </ul>
+  )}
+
+  {photos.length === 0 && (
+    <p class="section-label" style="margin-top:2rem;">Nothing here yet — photographs are on their way.</p>
+  )}
+</Base>

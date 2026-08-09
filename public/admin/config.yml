@@ -16,6 +16,21 @@ local_backend: true
 media_folder: "public/uploads"
 public_folder: "/uploads"
 
+# Shrink pictures in the browser before they're saved: converted to WebP and
+# capped at 2048px on the long side. A 6 MB phone photo becomes ~300 KB, so the
+# repository and the site stay fast no matter how many photos are added.
+media_libraries:
+  default:
+    config:
+      transformations:
+        raster_image:
+          format: webp
+          quality: 85
+          width: 2048
+          height: 2048
+        svg:
+          optimize: true
+
 # A friendly editing experience. Writings (philosophy) and Poetry are two views
 # over the same folder, split by the hidden "category" field — each tab stamps
 # the right category automatically when David creates a new piece.
@@ -57,6 +72,22 @@ collections:
       - { label: "Picture (optional)", name: "image", widget: "image", required: false, hint: "A photo or artwork shown at the top of this poem." }
       - { label: "Save as draft (hide from site)", name: "draft", widget: "boolean", default: false }
       - { label: "Body", name: "body", widget: "markdown", hint: "Write your poem here." }
+
+  - name: "photos"
+    label: "Photos"
+    label_singular: "Photo"
+    folder: "src/content/photos"
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    summary: "{{title}}  ·  {{date}}"
+    sortable_fields: ["date", "title"]
+    fields:
+      - { label: "Title", name: "title", widget: "string", hint: "A short name for the photograph — shown beneath it in the gallery." }
+      - { label: "Photograph", name: "image", widget: "image", hint: "The picture itself. It is resized automatically, so upload straight from your phone or camera." }
+      - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "DD MMMM YYYY", time_format: false, hint: "Newest photographs appear first." }
+      - { label: "Caption (optional)", name: "caption", widget: "string", required: false, hint: "A line about the photo — where or when it was taken." }
+      - { label: "Hide from site", name: "draft", widget: "boolean", default: false }
 
   - name: "testimonials"
     label: "Testimonials"

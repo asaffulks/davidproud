@@ -25,6 +25,18 @@ const testimonials = defineCollection({
   }),
 });
 
+// Photos — a gallery David curates through /admin. One entry per photograph.
+const photos = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/photos' }),
+  schema: z.object({
+    title: z.string(),
+    image: z.string(),
+    date: z.coerce.date(),
+    caption: z.string().optional(),
+    draft: z.boolean().default(false),
+  }),
+});
+
 // Editable page content (Home, About, Tutoring, Contact) so David can revise it in /admin.
 const pages = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/pages' }),
@@ -39,4 +51,4 @@ const pages = defineCollection({
   }),
 });
 
-export const collections = { writings, testimonials, pages };
+export const collections = { writings, testimonials, photos, pages };

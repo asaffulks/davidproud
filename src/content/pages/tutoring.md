@@ -7,4 +7,4 @@ examinations, postgraduates wrestling with the P_henomenology of Spirit_, or cur
 
 Lessons are held online, at times to suit. To enquire about availability and rates, please [get in touch](/contact/).
 
-My research at the Irish Institute includes James Joyce's 'Finnegans Wake' and on offer are tutorials on that great text, or other Joycean matters.![](/uploads/Screenshot%202026-08-06%20023743.png)
+My research at the Irish Institute includes James Joyce's 'Finnegans Wake' and on offer are tutorials on that great text, or other Joycean matters.

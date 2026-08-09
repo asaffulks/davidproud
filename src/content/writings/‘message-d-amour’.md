@@ -1,5 +1,5 @@
 ---
-title: ‘Message d'Amour’
+title: Message d'Amour
 date: 2026-08-09
 category: Poetry
 excerpt: ''

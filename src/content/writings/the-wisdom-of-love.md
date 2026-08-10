@@ -3,16 +3,14 @@ title: The Wisdom of Love
 date: 2026-08-10
 category: Poetry
 excerpt: ''
-image: ''
+image: /uploads/heart revealed.webp
 draft: false
 ---
 
 'The Wisdom of Love'
- 
 
- 
 1.
- 
+
 Philosophy is the love of wisdom,
 
 But I speak of the wisdom of love.
@@ -36,11 +34,9 @@ Let it display itself, why blur our
 Vision with some tedious chatter?
 
 The same is said of love’s power.
- 
- 
- 
- 2.
- 
+
+  2.
+
 What falsehood! Declare in poesy:
 
 ‘When Love speaks, the voice of

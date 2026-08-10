@@ -16,4 +16,4 @@ Orcid: https://orcid.org/0009-0005-8248-4794
 
 Plus a PGCE (Secondary) ICT from the University of Huddersfield.
 
-And a MSc in Software Development from the University of Huddersfield.
+And a MSc in Software Development from the University of Huddersfield.![](/uploads/WhatsApp%20Image%202026-08-08%20at%2021.51.34.jpeg)

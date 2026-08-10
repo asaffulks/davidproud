@@ -35,7 +35,7 @@ Vision with some tedious chatter?
 
 The same is said of love’s power.
 
-  2.
+2.
 
 What falsehood! Declare in poesy:
 

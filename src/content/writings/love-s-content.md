@@ -3,14 +3,12 @@ title: Love's Content
 date: 2026-08-11
 category: Poetry
 excerpt: ''
-image: ''
+image: /uploads/Screenshot 2026-08-11 210406.webp
 draft: false
 ---
 
 'Love's Content'
- 
 
- 
 ‘Love’, said Thomas, ‘is to choose and will
 
 The good of the other’, and with that empty

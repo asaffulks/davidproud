@@ -1,10 +1,10 @@
 ---
-title: Article posted on academia.edu
+title: Article posted on Academia.edu
 date: 2026-08-11
 category: Philosophy
 topic: ''
 excerpt: ''
-image: ''
+image: /uploads/hegel haus.webp
 draft: false
 ---
 

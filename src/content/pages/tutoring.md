@@ -7,3 +7,7 @@ One-to-one tutoring in philosophy — from first encounters with the great quest
 Lessons are held online, at times to suit. To enquire about availability and rates, please [get in touch](/contact/).
 
 My research at the Irish Institute includes James Joyce's 'Finnegans Wake' and on offer are tutorials on that great text, or other Joycean matters.
+
+My YouTube channel: 
+
+[https://www.youtube.com/@thespiritofhegel3487](https://www.youtube.com/@thespiritofhegel3487)

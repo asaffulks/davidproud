@@ -9,7 +9,8 @@
    *(your browser will offer to remember it — say yes; after that it's one click)*
 
 ## To publish a new poem or essay
-1. Poems go under **Poetry**; philosophy pieces go under **Writings**.
+1. Poems go under **Poetry**; philosophy pieces go under **Writings**;
+   notes on current events go under **Blog**.
    Click the one you want → **Create**
 2. Fill in:
    - **Title** — the name of the piece
@@ -25,8 +26,39 @@
 4. Wait **one to two minutes**, then look at **davidproud.uk** — it's there.
    *(If you don't see it, refresh the page.)*
 
+## To write a blog post
+The **Blog** is for shorter, timelier things — current events, a remark, whatever
+is on your mind this week. It works exactly like the others: **Blog → Create**,
+fill in the Title, Date and Body, then **Publish**.
+
+One extra switch: **Allow responses**. Leave it on and readers can send you a
+response at the bottom of the post. Switch it off for a post you'd rather keep
+to yourself. (Nothing a reader writes appears until you approve it — see below.)
+
+## Responses and testimonials from readers
+Readers can now send you two things: a **response** at the foot of a blog post,
+and a **testimonial** at the bottom of the Testimonials page.
+
+**None of it appears on the website until you say so.** It waits for you.
+
+1. When something arrives, you'll get an **email**. Click **Review it** — that
+   signs you in automatically.
+   *(Or go to **davidproud.uk/moderate** and use your passphrase.)*
+2. You'll see each one with the person's name, when they wrote, and their email
+   address if they gave one. Then choose:
+   - **Put it on the site** — it appears straight away
+   - **Not this one** — it stays hidden; nobody is told
+   - **Delete** — it's gone entirely
+3. If something looks like junk, it usually never reaches you at all — it's
+   caught before it arrives. Anything that looks *slightly* odd is still shown
+   to you, with a small red note saying why.
+
+Your device is remembered for a month, so you won't be signing in constantly.
+Changed your mind about something you approved? Find it under **Already
+decided** and press **Take it down**.
+
 ## To edit or remove something
-- **Edit:** click Poetry or Writings → click the piece → change it → **Publish**
+- **Edit:** click Poetry, Writings or Blog → click the piece → change it → **Publish**
 - **Hide without deleting:** open the piece, switch on **Save as draft**, Publish
 - **Delete:** open the piece → Delete
 

@@ -1,0 +1,67 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const [latest] = posts;
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+
+const roman = (n: number) => {
+  const table: [number, string][] = [
+    [1000, 'M'], [900, 'CM'], [500, 'D'], [400, 'CD'], [100, 'C'], [90, 'XC'],
+    [50, 'L'], [40, 'XL'], [10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I'],
+  ];
+  let out = '';
+  for (const [v, s] of table) while (n >= v) { out += s; n -= v; }
+  return out;
+};
+---
+<Base title="Blog" description="Notes and commentary on current events by David Proud.">
+  <div class="piece-head">
+    <span class="piece-cat">Notes &amp; commentary</span>
+    <h1 class="piece-title">Blog</h1>
+  </div>
+
+  {latest && (
+    <section class="featured">
+      <span class="entry-cat">Latest</span>
+      <h2 class="featured-title">
+        <a href={`/blog/${latest.id}/`}>{latest.data.title}</a>
+      </h2>
+      {latest.data.excerpt && <p class="featured-excerpt">{latest.data.excerpt}</p>}
+      <a class="read-on" href={`/blog/${latest.id}/`}>Read on</a>
+    </section>
+  )}
+
+  {posts.length > 1 && (
+    <>
+      <hr class="fleuron" />
+      <p class="section-label">Earlier posts</p>
+    </>
+  )}
+
+  {posts.length > 1 && (
+    <ul class="entries">
+      {posts.map((p, i) => (
+        <li class="entry" hidden={i === 0}>
+          <span class="entry-no" aria-hidden="true">{roman(posts.length - i)}</span>
+          <div>
+            <span class="entry-cat">{fmt(p.data.date)}</span>
+            <h2 class="entry-title">
+              <a href={`/blog/${p.id}/`}>{p.data.title}</a>
+            </h2>
+            {p.data.excerpt && <p class="entry-excerpt">{p.data.excerpt}</p>}
+          </div>
+        </li>
+      ))}
+    </ul>
+  )}
+
+  {posts.length === 0 && (
+    <p class="section-label" style="margin-top:2rem;">The first post is on its way &mdash; check back soon.</p>
+  )}
+</Base>

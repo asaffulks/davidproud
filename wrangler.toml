@@ -1,0 +1,19 @@
+# Cloudflare Pages configuration.
+#
+# The site itself is plain static files in dist/. The small API under
+# functions/ handles blog responses and testimonial submissions, and needs
+# the D1 database bound below.
+#
+# Secrets (never in this file) are set with:
+#   npx wrangler pages secret put <NAME> --project-name davidproud
+# They are: SESSION_SECRET, TURNSTILE_SECRET_KEY, MODERATOR_PASSPHRASE,
+#           MODERATOR_EMAIL, RESEND_API_KEY, MAIL_FROM
+
+name = "davidproud"
+compatibility_date = "2026-08-01"
+pages_build_output_dir = "dist"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "davidproud-responses"
+database_id = "0a5b2a4d-2c77-4347-8631-301f5a39b1a4"

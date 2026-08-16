@@ -1,0 +1,277 @@
+---
+// David's moderation desk. Not linked from the site and not indexed —
+// he reaches it from the link in his notification email, or by typing the
+// address. Everything on it is loaded and acted on through the API.
+import Base from '../layouts/Base.astro';
+---
+<Base title="Responses" description="Moderation" noindex={true}>
+  <div class="piece-head">
+    <span class="piece-cat">Waiting for you</span>
+    <h1 class="piece-title">Responses</h1>
+  </div>
+
+  <p class="form-status form-status--error" id="expired" hidden>
+    That sign-in link has expired. Send yourself a new one below.
+  </p>
+
+  <!-- Signed out -->
+  <section id="signin" hidden>
+    <form class="respond" id="signin-form" novalidate>
+      <p class="form-note">
+        This page is only for you. Sign in and it will remember this device for a month.
+      </p>
+
+      <div class="form-actions" id="link-actions">
+        <button class="btn btn--paper" type="button" id="send-link">Email me a sign-in link</button>
+      </div>
+
+      <p class="section-label" style="margin:2.2rem 0 1rem;">or</p>
+
+      <div class="field">
+        <label for="passphrase">Passphrase</label>
+        <input id="passphrase" name="passphrase" type="password" autocomplete="current-password" />
+      </div>
+      <div class="form-actions">
+        <button class="btn btn--paper" type="submit">Sign in</button>
+      </div>
+
+      <p class="form-status" id="signin-status" role="status" hidden></p>
+    </form>
+  </section>
+
+  <!-- Signed in -->
+  <section id="desk" hidden>
+    <p class="section-label" id="queue-label">Waiting</p>
+    <ul class="queue" id="queue"></ul>
+    <p class="form-note" id="queue-empty" hidden>Nothing is waiting. All caught up.</p>
+
+    <hr class="fleuron" />
+    <p class="section-label">Already decided</p>
+    <ul class="queue queue--quiet" id="decided"></ul>
+    <p class="form-note" id="decided-empty" hidden>Nothing yet.</p>
+
+    <div class="form-actions" style="margin-top:2.4rem;">
+      <button class="btn btn--paper" type="button" id="purge">Delete everything I turned down</button>
+      <button class="btn btn--paper" type="button" id="signout">Sign out</button>
+    </div>
+  </section>
+
+  <div class="end-mark" aria-hidden="true"></div>
+</Base>
+
+<script>
+  const expired = document.getElementById('expired')!;
+  const signin = document.getElementById('signin')!;
+  const signinForm = document.getElementById('signin-form') as HTMLFormElement;
+  const signinStatus = document.getElementById('signin-status')!;
+  const linkActions = document.getElementById('link-actions')!;
+  const desk = document.getElementById('desk')!;
+  const queue = document.getElementById('queue')!;
+  const queueLabel = document.getElementById('queue-label')!;
+  const queueEmpty = document.getElementById('queue-empty')!;
+  const decided = document.getElementById('decided')!;
+  const decidedEmpty = document.getElementById('decided-empty')!;
+
+  if (new URLSearchParams(location.search).has('expired')) expired.hidden = false;
+
+  const say = (el: HTMLElement, message: string, kind: 'ok' | 'error') => {
+    el.textContent = message;
+    el.className = `form-status form-status--${kind}`;
+    el.hidden = false;
+  };
+
+  const fmt = (iso: string) => {
+    const d = new Date(iso);
+    return isNaN(d.valueOf()) ? '' : d.toLocaleString('en-GB', {
+      day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit',
+    });
+  };
+
+  type Item = {
+    id: string; kind: string; slug?: string; pageTitle?: string;
+    name: string; email?: string; role?: string; body: string;
+    status: string; flags: string[]; createdAt: string;
+  };
+
+  // Every value below is placed with textContent — a submission is never
+  // allowed to become markup on this page.
+  const card = (item: Item, decidedView: boolean) => {
+    const li = document.createElement('li');
+    li.className = 'queue-item';
+
+    const head = document.createElement('p');
+    head.className = 'queue-kind';
+    head.textContent = item.kind === 'testimonial'
+      ? 'Testimonial'
+      : `Response · ${item.pageTitle || item.slug || 'a post'}`;
+    li.appendChild(head);
+
+    const who = document.createElement('p');
+    who.className = 'queue-who';
+    who.textContent = item.name;
+    if (item.role) who.textContent += ` · ${item.role}`;
+    li.appendChild(who);
+
+    const meta = document.createElement('p');
+    meta.className = 'queue-meta';
+    meta.textContent = fmt(item.createdAt);
+    if (item.email) meta.textContent += ` · ${item.email}`;
+    if (decidedView) meta.textContent += ` · ${item.status === 'approved' ? 'on the site' : 'turned down'}`;
+    li.appendChild(meta);
+
+    if (item.flags.length) {
+      const flags = document.createElement('p');
+      flags.className = 'queue-flags';
+      flags.textContent = `Automatic notes: ${item.flags.join(', ')}`;
+      li.appendChild(flags);
+    }
+
+    const body = document.createElement('div');
+    body.className = 'queue-body';
+    for (const para of item.body.split(/\n{2,}/)) {
+      const p = document.createElement('p');
+      p.textContent = para.trim();
+      if (p.textContent) body.appendChild(p);
+    }
+    li.appendChild(body);
+
+    const actions = document.createElement('div');
+    actions.className = 'queue-actions';
+    const buttons: Array<[string, string]> = decidedView
+      ? (item.status === 'approved' ? [['Take it down', 'reject'], ['Delete', 'delete']]
+                                    : [['Put it on the site', 'approve'], ['Delete', 'delete']])
+      : [['Put it on the site', 'approve'], ['Not this one', 'reject'], ['Delete', 'delete']];
+
+    for (const [label, action] of buttons) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'queue-btn';
+      if (action === 'approve') button.classList.add('queue-btn--yes');
+      if (action === 'delete') button.classList.add('queue-btn--no');
+      button.textContent = label;
+      button.addEventListener('click', () => act(item.id, action, button));
+      actions.appendChild(button);
+    }
+    li.appendChild(actions);
+
+    return li;
+  };
+
+  const draw = (list: HTMLElement, items: Item[], empty: HTMLElement, decidedView: boolean) => {
+    list.textContent = '';
+    for (const item of items) list.appendChild(card(item, decidedView));
+    empty.hidden = items.length > 0;
+  };
+
+  const load = async () => {
+    const res = await fetch('/api/moderate/list');
+    if (res.status === 401) {
+      const info = await res.json().catch(() => ({}));
+      signin.hidden = false;
+      desk.hidden = true;
+      linkActions.hidden = info.mail === false;
+      if (info.mail === false) {
+        say(signinStatus, 'Email sign-in is not switched on yet — use the passphrase.', 'ok');
+      }
+      return;
+    }
+    if (!res.ok) {
+      say(signinStatus, 'Could not reach the responses just now.', 'error');
+      signin.hidden = false;
+      return;
+    }
+
+    const data = await res.json();
+    signin.hidden = true;
+    expired.hidden = true;
+    desk.hidden = false;
+    queueLabel.textContent = data.pending.length
+      ? `Waiting · ${data.pending.length}`
+      : 'Waiting';
+    draw(queue, data.pending, queueEmpty, false);
+    draw(decided, data.decided, decidedEmpty, true);
+  };
+
+  const act = async (id: string, action: string, button: HTMLButtonElement) => {
+    button.disabled = true;
+    try {
+      const res = await fetch('/api/moderate/act', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ id, action }),
+      });
+      if (res.ok) await load();
+      else button.disabled = false;
+    } catch {
+      button.disabled = false;
+    }
+  };
+
+  document.getElementById('send-link')?.addEventListener('click', async (event) => {
+    const button = event.currentTarget as HTMLButtonElement;
+    button.disabled = true;
+    say(signinStatus, 'Sending…', 'ok');
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ action: 'link' }),
+      });
+      const data = await res.json().catch(() => ({}));
+      say(
+        signinStatus,
+        res.ok ? 'Sent. Look in your email for the sign-in link.' : (data.error ?? 'Could not send it.'),
+        res.ok ? 'ok' : 'error',
+      );
+    } catch {
+      say(signinStatus, 'Could not send it just now.', 'error');
+    } finally {
+      button.disabled = false;
+    }
+  });
+
+  signinForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const passphrase = (document.getElementById('passphrase') as HTMLInputElement).value;
+    if (!passphrase) {
+      say(signinStatus, 'Type your passphrase, or use the link above.', 'error');
+      return;
+    }
+    say(signinStatus, 'Checking…', 'ok');
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ action: 'passphrase', passphrase }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok) {
+        signinStatus.hidden = true;
+        await load();
+      } else {
+        say(signinStatus, data.error ?? 'That did not work.', 'error');
+      }
+    } catch {
+      say(signinStatus, 'Could not sign in just now.', 'error');
+    }
+  });
+
+  document.getElementById('signout')?.addEventListener('click', async () => {
+    await fetch('/api/auth/logout', { method: 'POST' });
+    location.href = '/moderate/';
+  });
+
+  document.getElementById('purge')?.addEventListener('click', async (event) => {
+    const button = event.currentTarget as HTMLButtonElement;
+    button.disabled = true;
+    await fetch('/api/moderate/act', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ action: 'purge' }),
+    });
+    button.disabled = false;
+    await load();
+  });
+
+  load();
+</script>

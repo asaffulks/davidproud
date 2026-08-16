@@ -15,6 +15,20 @@ const writings = defineCollection({
   }),
 });
 
+// Blog — shorter, timelier pieces: current events, remarks, occasional notes.
+// Unlike Writings and Poetry, blog posts can carry a comment thread.
+const blog = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
+  schema: z.object({
+    title: z.string(),
+    date: z.coerce.date(),
+    excerpt: z.string().optional(),
+    image: z.string().optional(),
+    comments: z.boolean().default(true),  // David can close the thread on a given post
+    draft: z.boolean().default(false),
+  }),
+});
+
 // Testimonials — from students/readers. Body of the file is the quote.
 const testimonials = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/testimonials' }),
@@ -52,4 +66,4 @@ const pages = defineCollection({
   }),
 });
 
-export const collections = { writings, testimonials, photos, pages };
+export const collections = { writings, blog, testimonials, photos, pages };

@@ -728,6 +728,175 @@ a { color: var(--gold-deep); text-underline-offset: 3px; }
 }
 .foot-nav a:hover { color: var(--gold); }
 
+/* ================= Forms — responses & testimonials ================= */
+
+.respond { margin: 2.4rem 0 0; }
+
+.form-note {
+  max-width: 34rem;
+  margin: 0 0 2rem;
+  font-size: 1.02rem;
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+.field { margin: 0 0 1.5rem; }
+.field label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  color: var(--gold-deep);
+}
+.field .opt {
+  text-transform: none;
+  letter-spacing: 0.06em;
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  padding: 0.75rem 0.9rem;
+  background: #fffdf8;
+  border: 1px solid var(--rule);
+  border-radius: 1px;
+  font-family: var(--text);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--ink);
+  transition: border-color .25s, box-shadow .25s;
+}
+.field textarea { resize: vertical; min-height: 8rem; }
+.field input:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(201, 167, 90, 0.18);
+}
+.field input::placeholder,
+.field textarea::placeholder { color: #a89d8a; font-style: italic; }
+
+/* the .btn rules were written for links — make them work on a button too */
+button.btn { appearance: none; background: transparent; cursor: pointer; }
+button.btn:disabled { opacity: 0.5; cursor: default; }
+
+.form-actions { margin-top: 1.8rem; }
+.form-actions .btn { margin-left: 0; }
+
+.form-status {
+  margin: 1.4rem 0 0;
+  max-width: 34rem;
+  font-size: 1.05rem;
+  line-height: 1.55;
+}
+.form-status--ok { color: var(--gold-deep); }
+.form-status--error { color: #8c3a2b; }
+
+/* Honeypot — off-screen rather than display:none, which some bots skip. */
+.hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* Turnstile's widget sits between the fields and the button */
+.cf-turnstile { margin: 0 0 1.6rem; }
+
+/* ================= Responses on a post ================= */
+
+.responses { margin-top: 4rem; }
+.comments { list-style: none; margin: 0 0 2.6rem; padding: 0; }
+.comment {
+  padding: 1.9rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+.comment:last-child { border-bottom: 0; }
+.comment-head {
+  margin: 0 0 0.5rem;
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+}
+.comment-name { color: var(--gold-deep); }
+.comment-date { color: var(--ink-soft); letter-spacing: 0.16em; }
+.comment-name + .comment-date::before { content: '\00a0\00b7\00a0'; }
+.comment-body p { margin: 0 0 0.9rem; }
+.comment-body p:last-child { margin-bottom: 0; }
+.comments-empty { margin-bottom: 2.4rem; }
+
+/* ================= Moderation desk ================= */
+
+.queue { list-style: none; margin: 0; padding: 0; }
+.queue-item {
+  padding: 1.9rem 0 1.7rem;
+  border-bottom: 1px solid var(--rule);
+}
+.queue-item:last-child { border-bottom: 0; }
+.queue-kind {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.26em;
+  color: var(--gold-deep);
+}
+.queue-who {
+  margin: 0.5rem 0 0.2rem;
+  font-family: var(--display);
+  font-size: 1.32rem;
+  line-height: 1.25;
+}
+.queue-meta { margin: 0; font-size: 0.96rem; font-style: italic; color: var(--ink-soft); }
+.queue-flags {
+  margin: 0.5rem 0 0;
+  font-size: 0.92rem;
+  color: #8c3a2b;
+}
+.queue-body {
+  margin: 1rem 0 0;
+  padding-left: 1.1rem;
+  border-left: 2px solid var(--gold);
+  color: var(--ink);
+}
+.queue-body p { margin: 0 0 0.8rem; }
+.queue-body p:last-child { margin-bottom: 0; }
+
+.queue-actions { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 1.3rem; }
+.queue-btn {
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  border: 1px solid var(--rule);
+  border-radius: 1px;
+  padding: 0.6rem 1.1rem 0.55rem;
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--ink-soft);
+  transition: background .2s, color .2s, border-color .2s;
+}
+.queue-btn:hover { border-color: var(--gold-deep); color: var(--ink); }
+.queue-btn:disabled { opacity: 0.45; cursor: default; }
+.queue-btn--yes { color: var(--gold-deep); border-color: var(--gold-deep); }
+.queue-btn--yes:hover { background: var(--gold-deep); border-color: var(--gold-deep); color: var(--paper); }
+.queue-btn--no:hover { border-color: #8c3a2b; color: #8c3a2b; }
+
+.queue--quiet .queue-item { opacity: 0.66; }
+.queue--quiet .queue-item:hover { opacity: 1; }
+
 @media (max-width: 560px) {
   body { font-size: 1.16rem; }
   .site-head { padding-top: 3.4rem; }

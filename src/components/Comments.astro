@@ -1,0 +1,199 @@
+---
+// Comment thread for a blog post.
+//
+// Nothing here is rendered at build time: approved comments are fetched from
+// /api/published when the page loads, so an approval shows up immediately
+// without rebuilding the site. Nothing a visitor writes appears anywhere
+// until David approves it in /moderate.
+import { TURNSTILE_SITE_KEY } from '../config';
+
+interface Props {
+  slug: string;
+  title: string;
+  open?: boolean;
+}
+const { slug, title, open = true } = Astro.props;
+---
+<section class="responses" data-slug={slug} data-title={title} data-sitekey={TURNSTILE_SITE_KEY}>
+  <hr class="fleuron" />
+  <p class="section-label" id="responses-label">Responses</p>
+
+  <ol class="comments" id="comment-list"></ol>
+  <p class="form-note comments-empty" id="comments-empty" hidden>
+    No responses yet. Yours would be the first.
+  </p>
+
+  {open ? (
+    <form class="respond" id="respond" novalidate>
+      <p class="form-note">
+        Your response is read by David before it appears. Your email address is never
+        published &mdash; it is only there in case he would like to reply to you.
+      </p>
+
+      <div class="field">
+        <label for="c-name">Your name</label>
+        <input id="c-name" name="name" type="text" maxlength="80" required autocomplete="name" />
+      </div>
+
+      <div class="field">
+        <label for="c-email">Email <span class="opt">(optional, never published)</span></label>
+        <input id="c-email" name="email" type="email" maxlength="200" autocomplete="email" />
+      </div>
+
+      <div class="field">
+        <label for="c-body">Your response</label>
+        <textarea id="c-body" name="body" rows="6" maxlength="4000" required></textarea>
+      </div>
+
+      {TURNSTILE_SITE_KEY && (
+        <div class="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY} data-theme="light" data-size="flexible"></div>
+      )}
+
+      <!-- Honeypot: invisible to people, irresistible to bots. -->
+      <div class="hp" aria-hidden="true">
+        <label for="c-website">Website</label>
+        <input id="c-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+      </div>
+
+      <div class="form-actions">
+        <button class="btn btn--paper" type="submit">Send response</button>
+      </div>
+
+      <p class="form-status" id="c-status" role="status" hidden></p>
+    </form>
+  ) : (
+    <p class="form-note">Responses are closed on this post.</p>
+  )}
+</section>
+
+{TURNSTILE_SITE_KEY && (
+  <script is:inline async defer src="https://challenges.cloudflare.com/turnstile/v0/api.js"></script>
+)}
+
+<script>
+  declare global {
+    interface Window { turnstile?: { reset?: () => void } }
+  }
+
+  const root = document.querySelector<HTMLElement>('.responses');
+
+  if (root) {
+    const slug = root.dataset.slug ?? '';
+    const list = root.querySelector<HTMLOListElement>('#comment-list')!;
+    const empty = root.querySelector<HTMLElement>('#comments-empty')!;
+    const form = root.querySelector<HTMLFormElement>('#respond');
+    const status = root.querySelector<HTMLElement>('#c-status');
+    const loadedAt = Date.now();
+
+    const fmt = (iso: string) => {
+      const d = new Date(iso);
+      return isNaN(d.valueOf())
+        ? ''
+        : d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+    };
+
+    // Built with textContent throughout — a comment is text, never markup.
+    const draw = (items: Array<{ name: string; body: string; created_at: string }>) => {
+      list.textContent = '';
+      for (const item of items) {
+        const li = document.createElement('li');
+        li.className = 'comment';
+
+        const head = document.createElement('p');
+        head.className = 'comment-head';
+        const who = document.createElement('span');
+        who.className = 'comment-name';
+        who.textContent = item.name;
+        head.appendChild(who);
+        const when = fmt(item.created_at);
+        if (when) {
+          const time = document.createElement('span');
+          time.className = 'comment-date';
+          time.textContent = when;
+          head.appendChild(time);
+        }
+
+        const body = document.createElement('div');
+        body.className = 'comment-body';
+        for (const para of item.body.split(/\n{2,}/)) {
+          const p = document.createElement('p');
+          p.textContent = para.trim();
+          if (p.textContent) body.appendChild(p);
+        }
+
+        li.append(head, body);
+        list.appendChild(li);
+      }
+      empty.hidden = items.length > 0;
+    };
+
+    const load = async () => {
+      try {
+        const res = await fetch(`/api/published?kind=comment&slug=${encodeURIComponent(slug)}`);
+        if (!res.ok) throw new Error(String(res.status));
+        const data = await res.json();
+        draw(Array.isArray(data.items) ? data.items : []);
+      } catch {
+        // The thread is an addition to the page, not the page itself — if the
+        // API is unreachable, stay quiet rather than showing an error.
+        empty.hidden = true;
+      }
+    };
+
+    load();
+
+    const say = (message: string, kind: 'ok' | 'error') => {
+      if (!status) return;
+      status.textContent = message;
+      status.className = `form-status form-status--${kind}`;
+      status.hidden = false;
+    };
+
+    form?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const data = new FormData(form);
+      const name = String(data.get('name') ?? '').trim();
+      const body = String(data.get('body') ?? '').trim();
+
+      if (!name || !body) {
+        say('Please add your name and a response.', 'error');
+        return;
+      }
+
+      const button = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+      button.disabled = true;
+      say('Sending…', 'ok');
+
+      try {
+        const res = await fetch('/api/submit', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({
+            kind: 'comment',
+            slug,
+            pageTitle: root.dataset.title ?? '',
+            name,
+            email: String(data.get('email') ?? '').trim(),
+            body,
+            website: String(data.get('website') ?? ''),
+            elapsed: Date.now() - loadedAt,
+            turnstile: String(data.get('cf-turnstile-response') ?? ''),
+          }),
+        });
+        const result = await res.json().catch(() => ({}));
+
+        if (res.ok) {
+          form.reset();
+          window.turnstile?.reset?.();
+          say('Thank you — your response has been sent to David and will appear here once he has read it.', 'ok');
+        } else {
+          say(result.error ?? 'Something went wrong. Please try again in a moment.', 'error');
+        }
+      } catch {
+        say('Something went wrong. Please try again in a moment.', 'error');
+      } finally {
+        button.disabled = false;
+      }
+    });
+  }
+</script>

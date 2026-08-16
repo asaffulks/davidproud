@@ -11,9 +11,48 @@ npm run build    # -> dist/
 ```
 
 ## Content model
-- Writings live in `src/content/writings/*.md` (frontmatter: title, date, category, excerpt, image, draft).
+- Writings live in `src/content/writings/*.md` (frontmatter: title, date, category, topic, excerpt, image, draft).
+  `category: Poetry` renders on /poetry/, `Philosophy` on /writings/.
+- Blog posts live in `src/content/blog/*.md` (title, date, excerpt, image, comments, draft) → /blog/.
+- Photos, testimonials and editable page copy: `src/content/{photos,testimonials,pages}/`.
 - Uploaded pictures go to `public/uploads/` (served at `/uploads/...`).
 - Schema enforced in `src/content.config.ts`.
+
+## Responses & testimonials (the small API)
+
+Visitors can send a response on a blog post and a testimonial on /testimonials/.
+**Nothing is published until David approves it at /moderate/** — that moderation
+step, not the spam check, is what keeps the site clean.
+
+- **Where it runs:** Cloudflare Pages Functions in `functions/`, shared code in
+  `lib/`. `wrangler pages deploy` compiles them automatically — the existing CI
+  command needs no change.
+- **Store:** D1 database `davidproud-responses` (id `0a5b2a4d-2c77-4347-8631-301f5a39b1a4`),
+  bound as `DB` in `wrangler.toml`. Schema in `migrations/`.
+  Apply with `npx wrangler d1 execute davidproud-responses --remote --file=./migrations/0001_create_submissions.sql`.
+- **Endpoints:** `POST /api/submit`, `GET /api/published`, `POST /api/auth/login`,
+  `GET /api/auth/callback`, `POST /api/auth/logout`, `GET /api/moderate/list`,
+  `POST /api/moderate/act`.
+- **Rendering:** approved items are fetched client-side, so approving something
+  shows it immediately — no rebuild, and no spam ever enters the git repo.
+
+### Spam layers
+Honeypot field → minimum fill time → Cloudflare Turnstile → 5-per-hour per-IP
+rate limit (IPs stored only as a salted hash) → content scoring (score ≥ 5 is
+dropped silently, lower scores are flagged for David) → moderation.
+
+A *forged* Turnstile token is refused. A *missing* one is allowed through and
+flagged `no spam-check`, so a reader whose widget failed to load does not lose
+what they wrote. Turnstile does not render in CDP-controlled browsers, so it
+cannot be exercised by automated tests — check it by eye in a real browser.
+
+### Secrets (Pages → production)
+`SESSION_SECRET`, `TURNSTILE_SECRET_KEY`, `MODERATOR_PASSPHRASE`, `MODERATOR_EMAIL`,
+and — once a Resend account exists — `RESEND_API_KEY` and `MAIL_FROM`.
+Set with `npx wrangler pages secret put NAME --project-name davidproud`.
+Without the Resend pair, notification email and the emailed sign-in link are
+skipped; David signs in at /moderate/ with the passphrase instead.
+Turnstile site key (public) lives in `src/config.ts`.
 
 ## Deploy (Cloudflare Pages)
 1. Push this repo to GitHub (account that owns it = the OWNER below).

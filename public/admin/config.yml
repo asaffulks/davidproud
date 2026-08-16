@@ -74,6 +74,24 @@ collections:
       - { label: "Save as draft (hide from site)", name: "draft", widget: "boolean", default: false }
       - { label: "Body", name: "body", widget: "markdown", hint: "Write your poem here." }
 
+  - name: "blog"
+    label: "Blog"
+    label_singular: "Blog post"
+    folder: "src/content/blog"
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    summary: "{{title}}  ·  {{date}}"
+    sortable_fields: ["date", "title"]
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "DD MMMM YYYY", time_format: false, hint: "Newest posts appear first." }
+      - { label: "Short summary (optional)", name: "excerpt", widget: "string", required: false, hint: "One line shown under the title on the Blog page." }
+      - { label: "Picture (optional)", name: "image", widget: "image", required: false, hint: "A photo shown at the top of the post." }
+      - { label: "Allow responses", name: "comments", widget: "boolean", default: true, hint: "Readers can send a response to this post. Nothing appears until you approve it on the Responses page." }
+      - { label: "Save as draft (hide from site)", name: "draft", widget: "boolean", default: false }
+      - { label: "Body", name: "body", widget: "markdown", hint: "Write your post here — current events, a remark, anything of the moment." }
+
   - name: "photos"
     label: "Photos"
     label_singular: "Photo"

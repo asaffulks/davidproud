@@ -1,0 +1,177 @@
+---
+// "Share your experience" — a visitor-submitted testimonial.
+//
+// Submissions go into the moderation queue and appear on this page only after
+// David approves them in /moderate. Approved ones are fetched at page load, so
+// they show up without the site being rebuilt.
+import { TURNSTILE_SITE_KEY } from '../config';
+---
+<section class="submitted" data-sitekey={TURNSTILE_SITE_KEY}>
+  <div id="submitted-block" hidden>
+    <hr class="fleuron" />
+    <p class="section-label">From students and readers</p>
+    <ul class="testimonials" id="submitted-list"></ul>
+  </div>
+
+  <hr class="fleuron" />
+  <p class="section-label">Share your experience</p>
+
+  <form class="respond" id="t-form" novalidate>
+    <p class="form-note">
+      If David has tutored you, or his writing has meant something to you, you are
+      welcome to say so here. He reads every submission before anything appears on
+      the page. Your email address is never published.
+    </p>
+
+    <div class="field">
+      <label for="t-name">Your name</label>
+      <input id="t-name" name="name" type="text" maxlength="80" required autocomplete="name" />
+    </div>
+
+    <div class="field">
+      <label for="t-role">How you know David <span class="opt">(optional)</span></label>
+      <input id="t-role" name="role" type="text" maxlength="120" autocomplete="organization-title"
+             placeholder="e.g. Philosophy undergraduate, private student, reader" />
+    </div>
+
+    <div class="field">
+      <label for="t-email">Email <span class="opt">(optional, never published)</span></label>
+      <input id="t-email" name="email" type="email" maxlength="200" autocomplete="email" />
+    </div>
+
+    <div class="field">
+      <label for="t-body">Your testimonial</label>
+      <textarea id="t-body" name="body" rows="6" maxlength="4000" required></textarea>
+    </div>
+
+    {TURNSTILE_SITE_KEY && (
+      <div class="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY} data-theme="light" data-size="flexible"></div>
+    )}
+
+    <!-- Honeypot: invisible to people, irresistible to bots. -->
+    <div class="hp" aria-hidden="true">
+      <label for="t-website">Website</label>
+      <input id="t-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+    </div>
+
+    <div class="form-actions">
+      <button class="btn btn--paper" type="submit">Send testimonial</button>
+    </div>
+
+    <p class="form-status" id="t-status" role="status" hidden></p>
+  </form>
+</section>
+
+{TURNSTILE_SITE_KEY && (
+  <script is:inline async defer src="https://challenges.cloudflare.com/turnstile/v0/api.js"></script>
+)}
+
+<script>
+  declare global {
+    interface Window { turnstile?: { reset?: () => void } }
+  }
+
+  const root = document.querySelector<HTMLElement>('.submitted');
+
+  if (root) {
+    const block = root.querySelector<HTMLElement>('#submitted-block')!;
+    const list = root.querySelector<HTMLUListElement>('#submitted-list')!;
+    const form = root.querySelector<HTMLFormElement>('#t-form')!;
+    const status = root.querySelector<HTMLElement>('#t-status')!;
+    const loadedAt = Date.now();
+
+    // Built with textContent throughout — a testimonial is text, never markup.
+    const draw = (items: Array<{ name: string; role?: string; body: string }>) => {
+      list.textContent = '';
+      for (const item of items) {
+        const li = document.createElement('li');
+        li.className = 'testimonial';
+
+        const quote = document.createElement('blockquote');
+        quote.className = 'testimonial-quote';
+        for (const para of item.body.split(/\n{2,}/)) {
+          const p = document.createElement('p');
+          p.textContent = para.trim();
+          if (p.textContent) quote.appendChild(p);
+        }
+
+        const attrib = document.createElement('p');
+        attrib.className = 'testimonial-attrib';
+        attrib.textContent = item.name;
+        if (item.role) {
+          const role = document.createElement('span');
+          role.className = 'role';
+          role.textContent = ` · ${item.role}`;
+          attrib.appendChild(role);
+        }
+
+        li.append(quote, attrib);
+        list.appendChild(li);
+      }
+      block.hidden = items.length === 0;
+    };
+
+    (async () => {
+      try {
+        const res = await fetch('/api/published?kind=testimonial');
+        if (!res.ok) throw new Error(String(res.status));
+        const data = await res.json();
+        draw(Array.isArray(data.items) ? data.items : []);
+      } catch {
+        block.hidden = true;
+      }
+    })();
+
+    const say = (message: string, kind: 'ok' | 'error') => {
+      status.textContent = message;
+      status.className = `form-status form-status--${kind}`;
+      status.hidden = false;
+    };
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const data = new FormData(form);
+      const name = String(data.get('name') ?? '').trim();
+      const body = String(data.get('body') ?? '').trim();
+
+      if (!name || !body) {
+        say('Please add your name and a few words.', 'error');
+        return;
+      }
+
+      const button = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+      button.disabled = true;
+      say('Sending…', 'ok');
+
+      try {
+        const res = await fetch('/api/submit', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({
+            kind: 'testimonial',
+            name,
+            role: String(data.get('role') ?? '').trim(),
+            email: String(data.get('email') ?? '').trim(),
+            body,
+            website: String(data.get('website') ?? ''),
+            elapsed: Date.now() - loadedAt,
+            turnstile: String(data.get('cf-turnstile-response') ?? ''),
+          }),
+        });
+        const result = await res.json().catch(() => ({}));
+
+        if (res.ok) {
+          form.reset();
+          window.turnstile?.reset?.();
+          say('Thank you — David will read it, and it will appear here once he has.', 'ok');
+        } else {
+          say(result.error ?? 'Something went wrong. Please try again in a moment.', 'error');
+        }
+      } catch {
+        say('Something went wrong. Please try again in a moment.', 'error');
+      } finally {
+        button.disabled = false;
+      }
+    });
+  }
+</script>

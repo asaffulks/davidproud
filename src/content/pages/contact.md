@@ -1,6 +1,6 @@
 ---
 title: Contact
-email: hegelacademy@yahoo.com
+email: david@davidproud.uk
 linkedin: https://www.linkedin.com/in/david-proud-a749bb68/
 ---
 

@@ -5,9 +5,119 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex" />
     <title>Content Manager — David Proud</title>
+    <style>
+      /* The Responses button, sitting over the CMS in the site's own colours. */
+      #responses-link {
+        position: fixed;
+        right: 1rem;
+        bottom: 1rem;
+        z-index: 9999;
+        display: none;
+        align-items: center;
+        gap: 0.55rem;
+        padding: 0.7rem 1.15rem;
+        background: #14110c;
+        border: 1px solid #8a6d3b;
+        border-radius: 2px;
+        color: #c9a75a;
+        font: 400 0.82rem/1 Georgia, 'Times New Roman', serif;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        text-decoration: none;
+        box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.6);
+        cursor: pointer;
+      }
+      #responses-link:hover { background: #1d1811; color: #f6f1e5; }
+      #responses-link .count {
+        display: inline-block;
+        min-width: 1.35rem;
+        padding: 0.15rem 0.35rem;
+        border-radius: 999px;
+        background: #c9a75a;
+        color: #14110c;
+        font-size: 0.78rem;
+        letter-spacing: 0;
+        text-align: center;
+      }
+      @media (max-width: 560px) {
+        #responses-link { right: 0.6rem; bottom: 0.6rem; font-size: 0.74rem; }
+      }
+    </style>
   </head>
   <body>
     <!-- Sveltia CMS: David's writing dashboard. Reads config.yml (same folder). -->
     <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js" type="module"></script>
+
+    <a id="responses-link" href="/moderate/">
+      <span>Responses</span><span class="count" hidden></span>
+    </a>
+
+    <script type="module">
+      // Reader responses and testimonials are moderated at /moderate/. David is
+      // already signed in here with GitHub, and that same sign-in works over
+      // there — this button hands his GitHub session across so he is never
+      // asked to log in twice.
+      const link = document.getElementById('responses-link');
+      const count = link.querySelector('.count');
+
+      // Sveltia keeps the signed-in user under this key. If it ever renames it,
+      // fall back to scanning for any stored object carrying a token — and if
+      // even that fails, the button still works, /moderate just asks for the
+      // passphrase instead.
+      const findToken = () => {
+        try {
+          const direct = JSON.parse(localStorage.getItem('sveltia-cms.user') || 'null');
+          if (direct?.token) return direct.token;
+        } catch { /* fall through to the scan */ }
+
+        for (const key of Object.keys(localStorage)) {
+          try {
+            const value = JSON.parse(localStorage.getItem(key) || 'null');
+            if (value && typeof value.token === 'string' && value.token.length > 20) return value.token;
+          } catch { /* not JSON — ignore */ }
+        }
+        return null;
+      };
+
+      const signIn = async () => {
+        const token = findToken();
+        if (!token) return false;
+        try {
+          const res = await fetch('/api/auth/github', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ token }),
+          });
+          return res.ok;
+        } catch {
+          return false;
+        }
+      };
+
+      const refresh = async () => {
+        if (!(await signIn())) return;
+        try {
+          const res = await fetch('/api/moderate/list');
+          if (!res.ok) return;
+          const data = await res.json();
+          const waiting = (data.pending ?? []).length;
+          if (waiting > 0) {
+            count.textContent = String(waiting);
+            count.hidden = false;
+          }
+        } catch { /* the button is still there and still works */ }
+      };
+
+      link.addEventListener('click', async (event) => {
+        event.preventDefault();
+        await signIn();
+        location.href = '/moderate/';
+      });
+
+      // The CMS takes a moment to sign in and settle before the token exists.
+      const show = () => { link.style.display = 'flex'; };
+      setTimeout(() => { show(); refresh(); }, 2500);
+      setTimeout(refresh, 8000);
+    </script>
   </body>
 </html>

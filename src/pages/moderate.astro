@@ -18,7 +18,9 @@ import Base from '../layouts/Base.astro';
   <section id="signin" hidden>
     <form class="respond" id="signin-form" novalidate>
       <p class="form-note">
-        This page is only for you. Sign in and it will remember this device for a month.
+        This page is only for you. If you have just come from the content manager
+        you shouldn't need any of this &mdash; your sign-in there works here too.
+        Otherwise, sign in below and this device is remembered for a month.
       </p>
 
       <div class="form-actions" id="link-actions">
@@ -163,9 +165,49 @@ import Base from '../layouts/Base.astro';
     empty.hidden = items.length > 0;
   };
 
+  // David signs in at /admin with GitHub, and the CMS keeps that session in
+  // this site's own storage. Borrow it rather than asking him to sign in twice
+  // — the server checks the token really can write to the site's repository.
+  const findGithubToken = () => {
+    try {
+      const direct = JSON.parse(localStorage.getItem('sveltia-cms.user') || 'null');
+      if (direct?.token) return direct.token;
+    } catch { /* fall through to the scan */ }
+
+    for (const key of Object.keys(localStorage)) {
+      try {
+        const value = JSON.parse(localStorage.getItem(key) || 'null');
+        if (value && typeof value.token === 'string' && value.token.length > 20) return value.token;
+      } catch { /* not JSON — ignore */ }
+    }
+    return null;
+  };
+
+  const githubSignIn = async () => {
+    const token = findGithubToken();
+    if (!token) return false;
+    try {
+      const res = await fetch('/api/auth/github', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ token }),
+      });
+      return res.ok;
+    } catch {
+      return false;
+    }
+  };
+
+  let triedGithub = false;
+
   const load = async () => {
     const res = await fetch('/api/moderate/list');
     if (res.status === 401) {
+      // One silent attempt with the content-manager session before asking.
+      if (!triedGithub) {
+        triedGithub = true;
+        if (await githubSignIn()) return load();
+      }
       const info = await res.json().catch(() => ({}));
       signin.hidden = false;
       desk.hidden = true;

@@ -41,9 +41,9 @@ and a **testimonial** at the bottom of the Testimonials page.
 
 **None of it appears on the website until you say so.** It waits for you.
 
-1. When something arrives, you'll get an **email**. Click **Review it** — that
-   signs you in automatically.
-   *(Or go to **davidproud.uk/moderate** and use your passphrase.)*
+1. Sign in to **davidproud.uk/admin** as usual. Bottom right you'll see a
+   **Responses** button — with a number on it if anything is waiting. Click it.
+   *(No second password: your sign-in here carries across.)*
 2. You'll see each one with the person's name, when they wrote, and their email
    address if they gave one. Then choose:
    - **Put it on the site** — it appears straight away
@@ -53,9 +53,17 @@ and a **testimonial** at the bottom of the Testimonials page.
    caught before it arrives. Anything that looks *slightly* odd is still shown
    to you, with a small red note saying why.
 
-Your device is remembered for a month, so you won't be signing in constantly.
 Changed your mind about something you approved? Find it under **Already
 decided** and press **Take it down**.
+
+*(You can also go straight to **davidproud.uk/moderate** — from a phone, say.
+If it asks, use the passphrase Asaf gave you; it then remembers that device
+for a month.)*
+
+## Your email address
+The website now shows **david@davidproud.uk**. Anything sent there arrives in
+your normal inbox — it's a forwarding address, so you don't have a new mailbox
+to check. Reply from your usual account as you always have.
 
 ## To edit or remove something
 - **Edit:** click Poetry, Writings or Blog → click the piece → change it → **Publish**

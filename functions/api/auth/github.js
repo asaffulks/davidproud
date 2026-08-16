@@ -38,19 +38,22 @@ export const onRequestPost = async ({ request, env }) => {
   }
   if (!token || typeof token !== 'string') return json({ error: 'No GitHub session found.' }, 400);
 
-  await recordAttempt(env, hash);
+  // Only *failures* count against the limit. /admin signs in through here on
+  // every page load, and charging those would lock David out of his own site.
+  const refuse = async () => {
+    await recordAttempt(env, hash);
+    return json({ error: 'That GitHub account cannot edit this site.' }, 401);
+  };
 
   try {
     const repo = env.GITHUB_REPO || DEFAULT_REPO;
     const res = await gh(`/repos/${repo}`, token);
     // A private repo returns 404 to anyone who cannot see it, so this covers
     // both "not a collaborator" and "token is no good".
-    if (!res.ok) return json({ error: 'That GitHub account cannot edit this site.' }, 401);
+    if (!res.ok) return refuse();
 
     const data = await res.json();
-    if (data?.permissions?.push !== true) {
-      return json({ error: 'That GitHub account cannot edit this site.' }, 401);
-    }
+    if (data?.permissions?.push !== true) return refuse();
 
     const session = await mintToken(env.SESSION_SECRET, 'session', SESSION_TTL);
     return json({ ok: true }, 200, { 'set-cookie': sessionCookie(session) });

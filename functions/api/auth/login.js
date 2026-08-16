@@ -42,13 +42,15 @@ export const onRequestPost = async ({ request, env }) => {
   }
 
   if (payload.action === 'passphrase') {
-    await recordAttempt(env, hash);
     const supplied = String(payload.passphrase ?? '');
     const expected = String(env.MODERATOR_PASSPHRASE ?? '');
     if (!expected) {
       return json({ error: 'No passphrase is set on this site.' }, 400);
     }
+    // Only a wrong passphrase counts against the limit, so David can never be
+    // locked out by his own successful sign-ins.
     if (!(await secretEquals(env.SESSION_SECRET, supplied, expected))) {
+      await recordAttempt(env, hash);
       return json({ error: 'That passphrase was not right.' }, 401);
     }
     const session = await mintToken(env.SESSION_SECRET, 'session', SESSION_TTL);

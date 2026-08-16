@@ -95,7 +95,7 @@
       };
 
       const refresh = async () => {
-        if (!(await signIn())) return;
+        if (!(await signIn())) return false;
         try {
           const res = await fetch('/api/moderate/list');
           if (!res.ok) return;
@@ -105,7 +105,9 @@
             count.textContent = String(waiting);
             count.hidden = false;
           }
+          return true;
         } catch { /* the button is still there and still works */ }
+        return false;
       };
 
       link.addEventListener('click', async (event) => {
@@ -114,10 +116,12 @@
         location.href = '/moderate/';
       });
 
-      // The CMS takes a moment to sign in and settle before the token exists.
-      const show = () => { link.style.display = 'flex'; };
-      setTimeout(() => { show(); refresh(); }, 2500);
-      setTimeout(refresh, 8000);
+      // The CMS takes a moment to sign in and settle before the token exists,
+      // so try once early and only try again if that was too soon.
+      setTimeout(async () => {
+        link.style.display = 'flex';
+        if (!(await refresh())) setTimeout(refresh, 6000);
+      }, 2500);
     </script>
   </body>
 </html>

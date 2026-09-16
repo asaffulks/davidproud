@@ -61,7 +61,7 @@ If it asks, use the passphrase Asaf gave you; it then remembers that device
 for a month.)*
 
 ## Your email address
-The website shows **hegelacademy@yahoo.com** — your normal Yahoo inbox. Readers
+The website shows **david.proud@liverpool.ac.uk**. Readers
 write straight to it; nothing forwards through the website, so there is
 no extra mailbox to check. If you'd ever rather have messages arrive somewhere
 else, just edit the email on the Contact page (Pages → Contact) and Publish.

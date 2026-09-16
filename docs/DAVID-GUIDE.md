@@ -61,9 +61,10 @@ If it asks, use the passphrase Asaf gave you; it then remembers that device
 for a month.)*
 
 ## Your email address
-The website now shows **david@davidproud.uk**. Anything sent there arrives in
-your normal inbox — it's a forwarding address, so you don't have a new mailbox
-to check. Reply from your usual account as you always have.
+The website shows **hegelacademy@yahoo.com** — your normal Yahoo inbox. Readers
+write straight to it; nothing forwards through the website, so there is
+no extra mailbox to check. If you'd ever rather have messages arrive somewhere
+else, just edit the email on the Contact page (Pages → Contact) and Publish.
 
 ## To edit or remove something
 - **Edit:** click Poetry, Writings or Blog → click the piece → change it → **Publish**

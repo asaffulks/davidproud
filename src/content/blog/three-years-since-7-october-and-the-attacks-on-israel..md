@@ -2,7 +2,7 @@
 title: Three years since 7 October attacks on Israel.
 date: 2026-10-07
 excerpt: ''
-image: ''
+image: /uploads/mascha 1.webp
 comments: true
 draft: false
 ---

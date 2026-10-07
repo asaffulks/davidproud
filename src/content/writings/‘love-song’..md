@@ -1,9 +1,9 @@
 ---
-title: ‘Love Song’.
+title: Love Song.
 date: 2026-10-07
 category: Poetry
 excerpt: ''
-image: ''
+image: /uploads/Screenshot 2026-10-07 161431.webp
 draft: false
 ---
 

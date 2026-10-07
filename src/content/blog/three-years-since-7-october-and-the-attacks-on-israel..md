@@ -1,5 +1,5 @@
 ---
-title: Three years since 7 October attacks on Israel.
+title: Three years since the 7 October attacks on Israel.
 date: 2026-10-07
 excerpt: ''
 image: /uploads/mascha 1.webp

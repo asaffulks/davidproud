@@ -3,7 +3,7 @@ title: My Beloved's Uniqueness
 date: 2026-10-07
 category: Poetry
 excerpt: ''
-image: ''
+image: /uploads/lovers d.webp
 draft: false
 ---
 

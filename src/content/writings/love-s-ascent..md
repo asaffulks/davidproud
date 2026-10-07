@@ -3,7 +3,7 @@ title: Love's Ascent.
 date: 2026-10-07
 category: Poetry
 excerpt: ''
-image: ''
+image: /uploads/matisse.webp
 draft: false
 ---
 

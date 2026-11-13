@@ -7,7 +7,7 @@ comments: true
 draft: false
 ---
 
-BECKETT: LIEBEN 2026
+![](/uploads/beckett%203.webp)BECKETT: LIEBEN 2026
 
 17–20 September 2026 — Liverpool.  Lieben.
 
